@@ -1,0 +1,85 @@
+
+<issuance xmlns="http://www.w3schools.com" sender="100023423">
+    <general>
+        <number>100023423-2016-0000000002</number>
+        <dateIssuance>2016-05-05</dateIssuance>
+        <dateTransaction>2016-04-12</dateTransaction>
+        <documentType>ORIGINAL</documentType>
+    </general>
+    <provider>
+        <providerStatus>SELLER</providerStatus>
+        <dependentPerson>false</dependentPerson>
+        <residentsOfOffshore>false</residentsOfOffshore>
+        <specialDealGoods>false</specialDealGoods>
+        <bigCompany>false</bigCompany>
+        <countryCode>112</countryCode>
+        <unp>100023423</unp>
+        <name>УП "БЕЛОРГСИНТЕЗ"</name>
+        <address>г. Минск,ул. Пионерская, д.47, пом. 1</address>
+    </provider>
+    <recipient>
+        <recipientStatus>CUSTOMER</recipientStatus>
+        <dependentPerson>false</dependentPerson>
+        <residentsOfOffshore>false</residentsOfOffshore>
+        <specialDealGoods>false</specialDealGoods>
+        <bigCompany>false</bigCompany>
+        <countryCode>112</countryCode>
+        <unp>300042199</unp>
+        <branchCode></branchCode>
+        <name>ОАО "Нафтан"</name>
+        <address>211440 Витебская обл.,г. Новополоцк</address>
+    </recipient>
+    <senderReceiver>
+        <consignors>
+            <consignor>
+                <countryCode>112</countryCode>
+                <unp>100023423</unp>
+                <name>УП "БЕЛОРГСИНТЕЗ"</name>
+                <address>г. Минск,ул. Пионерская, д.47, пом. 1</address>
+            </consignor>
+        </consignors>
+        <consignees>
+            <consignee>
+                <countryCode>112</countryCode>
+                <unp>300042199</unp>
+                <name>ОАО "Нафтан"</name>
+                <address>211440 Витебская обл.,г. Новополоцк</address>
+            </consignee>
+        </consignees>
+    </senderReceiver>
+    <deliveryCondition>
+        <contract>
+            <number>160219-1-051.01.1634</number>
+            <date>2016-02-19</date>
+            <documents>
+                <document>
+                    <docType>
+                        <code>603</code>
+                    </docType>
+                    <date>2016-04-12</date>
+                    <blankCode>402861</blankCode>
+                    <seria>БР</seria>
+                    <number>2029336</number>
+                </document>
+            </documents>
+        </contract>
+    </deliveryCondition>
+    <roster totalCostVat="49406484" totalExcise="0" totalVat="8234414" totalCost="41172070">
+        <rosterItem>
+            <number>0</number>
+            <name>Электронный блок FEL56 52002308</name>
+            <code></code>
+            <units>796</units>
+            <count>10</count>
+            <price>4117207</price>
+            <cost>41172070</cost>
+            <summaExcise>0</summaExcise>
+            <vat>
+                <rate>20</rate>
+                <rateType>DECIMAL</rateType>
+                <summaVat>8234414</summaVat>
+            </vat>
+            <costVat>49406484</costVat>
+        </rosterItem>
+    </roster>
+</issuance>

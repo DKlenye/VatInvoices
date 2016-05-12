@@ -1,0 +1,61 @@
+
+<issuance xmlns="http://www.w3schools.com" sender="700002620">
+    <general>
+        <number>700002620-2016-0000000003</number>
+        <dateIssuance>2016-04-29</dateIssuance>
+        <dateTransaction>2016-04-29</dateTransaction>
+        <documentType>ORIGINAL</documentType>
+    </general>
+    <provider>
+        <providerStatus>COMMISSIONAIRE</providerStatus>
+        <dependentPerson>false</dependentPerson>
+        <residentsOfOffshore>false</residentsOfOffshore>
+        <specialDealGoods>false</specialDealGoods>
+        <bigCompany>false</bigCompany>
+        <countryCode>112</countryCode>
+        <unp>700002620</unp>
+        <name>ОАО "Зенит"</name>
+        <address>г Могилев,ул. Гришина, д.94</address>
+        <taxes>
+            <number>100000</number>
+            <date>2016-04-28</date>
+        </taxes>
+    </provider>
+    <recipient>
+        <recipientStatus>CONSIGNOR</recipientStatus>
+        <dependentPerson>false</dependentPerson>
+        <residentsOfOffshore>false</residentsOfOffshore>
+        <specialDealGoods>false</specialDealGoods>
+        <bigCompany>false</bigCompany>
+        <countryCode>112</countryCode>
+        <unp>300042199</unp>
+        <name>ОАО "Нафтан"</name>
+        <address>211440 Витебская обл.,г. Новополоцк</address>
+    </recipient>
+    <senderReceiver>
+        <consignors/>
+        <consignees/>
+    </senderReceiver>
+    <deliveryCondition/>
+    <roster totalCostVat="3347724" totalExcise="0" totalVat="557954" totalCost="2789770">
+        <rosterItem>
+            <number>0</number>
+            <name>толуол хч</name>
+            <code>2707201000</code>
+            <units>316</units>
+            <count>380</count>
+            <price>7341.5</price>
+            <cost>2789770</cost>
+            <summaExcise>0</summaExcise>
+            <vat>
+                <rate>20</rate>
+                <rateType>DECIMAL</rateType>
+                <summaVat>557954</summaVat>
+            </vat>
+            <costVat>3347724</costVat>
+            <descriptions>
+                <description>DEDUCTION_IN_FULL</description>
+            </descriptions>
+        </rosterItem>
+    </roster>
+</issuance>

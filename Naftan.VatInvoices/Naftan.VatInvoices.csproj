@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6B0A48D4-0B0F-4546-B8FC-215D7F1F5630}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Naftan.VatInvoices</RootNamespace>
+    <AssemblyName>Naftan.VatInvoices</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <DocumentationFile>bin\Debug\Naftan.VatInvoices.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Dapper">
+      <HintPath>..\packages\Dapper.1.42\lib\net40\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Domain\BuySaleType.cs" />
+    <Compile Include="Domain\Consignee.cs" />
+    <Compile Include="Domain\Consignor.cs" />
+    <Compile Include="Domain\Document.cs" />
+    <Compile Include="Domain\InvoiceStatus.cs" />
+    <Compile Include="Domain\InvoiceType.cs" />
+    <Compile Include="Domain\ProviderStatus.cs" />
+    <Compile Include="Domain\RecipientStatus.cs" />
+    <Compile Include="Domain\Replication.cs" />
+    <Compile Include="Domain\ReplicationSource.cs" />
+    <Compile Include="Domain\Roster.cs" />
+    <Compile Include="Domain\RosterDescription.cs" />
+    <Compile Include="Domain\VatInvoice.cs" />
+    <Compile Include="Domain\VatInvoiceNumber.cs" />
+    <Compile Include="Domain\VatRateType.cs" />
+    <Compile Include="Dto\VatInvoiceDto.cs" />
+    <Compile Include="Extensions\DapperQueryObjectExtensions.cs" />
+    <Compile Include="Extensions\StringApplyTemplateExtension.cs" />
+    <Compile Include="Extensions\StringConvertToEnumExtension.cs" />
+    <Compile Include="Impl\VatInvoiceService.cs" />
+    <Compile Include="IVatInvoiceService.cs" />
+    <Compile Include="Mnsati\Additional\MNSATI_additional.cs">
+      <DependentUpon>MNSATI_additional.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Mnsati\AddNoReference\MNSATI_add_no_reference.cs">
+      <DependentUpon>MNSATI_add_no_reference.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Mnsati\Fixed\MNSATI_fixed.cs">
+      <DependentUpon>MNSATI_fixed.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Mnsati\Original\MNSATI_original.cs">
+      <DependentUpon>MNSATI_original.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryObjects\InsertVatInvoice.cs" />
+    <Compile Include="QueryObjects\QueryObject.cs" />
+    <Compile Include="QueryObjects\SelectConsignee.cs" />
+    <Compile Include="QueryObjects\SelectConsignor.cs" />
+    <Compile Include="QueryObjects\SelectDocument.cs" />
+    <Compile Include="QueryObjects\SelectRoster.cs" />
+    <Compile Include="QueryObjects\SelectVatInvoice.cs" />
+    <Compile Include="QueryObjects\SelectVatInvoiceDto.cs" />
+    <Compile Include="Serialization\VatInvoiceSerializer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Mnsati\Additional\GenerateSchema.bat" />
+    <None Include="Mnsati\Additional\MNSATI_additional.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Mnsati\AddNoReference\GenerateSchema.bat" />
+    <None Include="Mnsati\AddNoReference\MNSATI_add_no_reference.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Mnsati\Fixed\GenerateSchema.bat" />
+    <None Include="Mnsati\Fixed\MNSATI_fixed.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Mnsati\Original\GenerateSchema.bat" />
+    <None Include="Mnsati\Original\MNSATI_original.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Mnsati\Original\original_max1.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="EInvVatService">
+      <Guid>{CF35F789-587F-4D9B-8194-9351F2A4DB32}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
