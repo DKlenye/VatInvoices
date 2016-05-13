@@ -42,7 +42,7 @@ namespace Naftan.VatInvoices.Tests.DatabaseTests
         {
             var doc = new XmlDocument();
             doc.Load(
-                @"D:\GitHub\Tests\VatInvoices\Naftan.VatInvoices.Tests\InInvoices\invoice-100023423-2016-0000000001.xml");
+                @"D:\GitHub\VatInvoices\Naftan.VatInvoices.Tests\InInvoices\invoice-100023423-2016-0000000001.xml");
             var manager = new XmlNamespaceManager(doc.NameTable);
             manager.AddNamespace("ns", "http://www.w3schools.com");
             var z = doc.SelectSingleNode("//ns:documentType", manager);

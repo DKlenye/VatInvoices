@@ -25,7 +25,7 @@ namespace Naftan.VatInvoices.Impl
         /// </summary>
         public static string PortalUrl = "https://vat.gov.by:4443/InvoicesWS/services/InvoicesPort";
 
-        public IEnumerable<VatInvoiceDto> LoadVatInvoicesList(int? period = null)
+        public IEnumerable<VatInvoiceDto> LoadVatInvoices(int? period = null)
         {
             using (var connection = new SqlConnection(ConnectionString))
             {

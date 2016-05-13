@@ -16,25 +16,22 @@ namespace Naftan.VatInvoices.QueryObjects
             return new QueryObject(@"
                 SELECT
                     InvoiceId,
-                    InOut, 
+                    IsIncome, 
                     ReplicationSourceId, 
-                    ReplicationId, 
-                    BuySaleTypeId,
+                    BuySaleTypeId as BuySaleType,
                     VatAccount, 
                     Account, 
-                    StatusId, 
+                    StatusId as InvoiceStatus, 
                     Sender, 
-                    [Year], 
-                    Number, 
                     NumberString,
                     DateIssuance, 
                     DateTransaction, 
-                    InvoiceTypeId, 
+                    InvoiceTypeId as InvoiceType, 
                     OriginalInvoiceNumber,
                     SendToRecipient, 
                     DateCancelled, 
                     ProviderCounteragentId, 
-                    ProviderStatusId,
+                    ProviderStatusId as ProviderStatus,
                     ProviderDependentPerson, 
                     ProviderResidentsOfOffshore,
                     ProviderSpecialDealGoods, 
@@ -54,7 +51,7 @@ namespace Naftan.VatInvoices.QueryObjects
                     ProviderTaxeNumber, 
                     ProviderTaxeDate,
                     RecipientCounteragentId,
-                    RecipientStatusId, 
+                    RecipientStatusId as RecipientStatus, 
                     RecipientDependentPerson,
                     RecipientResidentsOfOffshore,
                     RecipientSpecialDealGoods,
@@ -76,8 +73,7 @@ namespace Naftan.VatInvoices.QueryObjects
                     RosterTotalExcise, 
                     RosterTotalVat,
                     RosterTotalCost,
-                    ApproveDate,
-                    [Xml] 
+                    ApproveDate
                 FROM VatInvoice
             ");
         }

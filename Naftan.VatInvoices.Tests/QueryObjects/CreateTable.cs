@@ -189,7 +189,7 @@ namespace Naftan.VatInvoices.Tests.QueryObjects
             return new QueryObject(@"
                 CREATE TABLE [dbo].[VatInvoice](
 	                [InvoiceId] [int] IDENTITY(1,1) NOT NULL,
-	                [InOut] [bit] NOT NULL,
+	                [IsIncome] [bit] NOT NULL,
 	                [ReplicationSourceId] [int] NULL,
 	                [ReplicationId] [int] NULL,
 	                [BuySaleTypeId] [tinyint] NOT NULL,

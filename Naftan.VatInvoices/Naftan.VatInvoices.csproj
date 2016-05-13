@@ -78,7 +78,10 @@
       <DependentUpon>MNSATI_original.xsd</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryObjects\InsertConsignee.cs" />
+    <Compile Include="QueryObjects\InsertDocument.cs" />
     <Compile Include="QueryObjects\InsertVatInvoice.cs" />
+    <Compile Include="QueryObjects\InsetConsignor.cs" />
     <Compile Include="QueryObjects\QueryObject.cs" />
     <Compile Include="QueryObjects\SelectConsignee.cs" />
     <Compile Include="QueryObjects\SelectConsignor.cs" />
@@ -103,6 +106,9 @@
     </None>
     <None Include="Mnsati\Original\GenerateSchema.bat" />
     <None Include="Mnsati\Original\MNSATI_original.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Naftan.VatInvoices.nuspec">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />

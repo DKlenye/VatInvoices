@@ -15,8 +15,8 @@ namespace Naftan.VatInvoices.Domain
         public BuySaleType BuySaleType { get; set; }
         public InvoiceStatus InvoiceStatus { get; set; }
         public InvoiceType InvoiceType { get; set; }
-        
-        public bool InOut { get; set; }
+
+        public object IsIncome { get; set; }
         public int? ReplicationId { get; set; }
         public string VatAccount { get; set; }
         public string Account { get; set; }
@@ -97,6 +97,7 @@ namespace Naftan.VatInvoices.Domain
 
         public bool IsApprove { get { return ApproveDate != null; } }
         
+
         /// <summary>
         /// Построить исходный ЭСЧФ из объекта по формату портала МНС
         /// </summary>
@@ -117,7 +118,7 @@ namespace Naftan.VatInvoices.Domain
             var invoice = new VatInvoice()
             {
                 BuySaleType = BuySaleType.Buy,
-                InOut = false,
+                IsIncome = true,
 
                 Sender = original.sender,
                 Number = new VatInvoiceNumber(general.number),

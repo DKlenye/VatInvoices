@@ -12,9 +12,9 @@ namespace Naftan.VatInvoices
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="period"></param>
+        /// <param name="period">формат периода yyyymm</param>
         /// <returns></returns>
-        IEnumerable<VatInvoiceDto> LoadVatInvoicesList(int? period = null);
+        IEnumerable<VatInvoiceDto> LoadVatInvoices(int? period = null);
         
         /// <summary>
         /// Загрузить список документов по id ЭСЧФ

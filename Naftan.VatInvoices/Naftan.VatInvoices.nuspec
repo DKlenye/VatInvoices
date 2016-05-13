@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Naftan.VatInvoices</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Кленье Д.Н.</authors>
+    <owners>$author$</owners>
+    <projectUrl>https://github.com/DKlenye/VatInvoices</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Naftan.VatInvoices</description>
+    <releaseNotes>Сервис для работы с ЭСЧФ</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags></tags>
+  </metadata>
+</package>

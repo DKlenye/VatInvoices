@@ -10,7 +10,7 @@ namespace Naftan.VatInvoices.QueryObjects
 
             INSERT INTO VatInvoice
             (
-	            InOut,
+	            IsIncome,
 	            ReplicationSourceId,
 	            ReplicationId,
 	            BuySaleTypeId,
@@ -74,7 +74,7 @@ namespace Naftan.VatInvoices.QueryObjects
             )
             VALUES
             (
-	            @InOut,
+	            @IsIncome,
 	            @ReplicationSourceId,
 	            @ReplicationId,
 	            @BuySaleTypeId,
@@ -135,9 +135,9 @@ namespace Naftan.VatInvoices.QueryObjects
 	            @RosterTotalVat,
 	            @RosterTotalCost,
 	            @ApproveDate
-            )", new
+            ) ; Select SCOPE_IDENTITY();", new
             {
-                invoice.InOut,
+                invoice.IsIncome,
                 invoice.ReplicationSourceId,
                 invoice.ReplicationId,
                 BuySaleTypeId = invoice.BuySaleType,
