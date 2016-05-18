@@ -1,4 +1,6 @@
-﻿using Naftan.VatInvoices.Impl;
+﻿using System;
+using System.Linq;
+using Naftan.VatInvoices.Impl;
 using NUnit.Framework;
 
 namespace Naftan.VatInvoices.Tests.VatInvoiceServiceTests
@@ -36,6 +38,32 @@ namespace Naftan.VatInvoices.Tests.VatInvoiceServiceTests
         public void SelectConsignorsTest()
         {
             var dto = service.LoadConsignors(1);
+        }
+
+        [Test]
+        public void SelectRosterListTest()
+        {
+            var dto = service.LoadRosterList(1);
+        }
+
+        [Test]
+        public void ApproveTest()
+        {
+            var dto = service.ApproveVatInvoice(1, 2, 3);
+        }
+
+        [Test]
+        public void SignUpAndSendTest()
+        {
+            var rezult = service.SignUpAndSend(1);
+            
+        }
+
+        [Test]
+        public void CheckStatusTest()
+        {
+            var rezult = service.CheckStatus();
+            Console.Write(rezult.First().InvoiceStatus);
         }
 
 

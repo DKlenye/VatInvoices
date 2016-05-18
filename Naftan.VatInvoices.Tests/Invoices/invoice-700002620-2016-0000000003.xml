@@ -1,61 +1,84 @@
 
-<issuance xmlns="http://www.w3schools.com" sender="700002620">
-    <general>
-        <number>700002620-2016-0000000003</number>
-        <dateIssuance>2016-04-29</dateIssuance>
-        <dateTransaction>2016-04-29</dateTransaction>
-        <documentType>ORIGINAL</documentType>
-    </general>
-    <provider>
-        <providerStatus>COMMISSIONAIRE</providerStatus>
-        <dependentPerson>false</dependentPerson>
-        <residentsOfOffshore>false</residentsOfOffshore>
-        <specialDealGoods>false</specialDealGoods>
-        <bigCompany>false</bigCompany>
-        <countryCode>112</countryCode>
-        <unp>700002620</unp>
-        <name>ОАО "Зенит"</name>
-        <address>г Могилев,ул. Гришина, д.94</address>
-        <taxes>
-            <number>100000</number>
-            <date>2016-04-28</date>
-        </taxes>
-    </provider>
-    <recipient>
-        <recipientStatus>CONSIGNOR</recipientStatus>
+<issuance xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" sender="300042199" xmlns="http://www.w3schools.com">
+  <general>
+    <number>300042199-2016-0000000001</number>
+    <dateTransaction>2016-05-05</dateTransaction>
+    <documentType>ORIGINAL</documentType>
+  </general>
+  <provider>
+    <providerStatus>SELLER</providerStatus>
         <dependentPerson>false</dependentPerson>
         <residentsOfOffshore>false</residentsOfOffshore>
         <specialDealGoods>false</specialDealGoods>
         <bigCompany>false</bigCompany>
         <countryCode>112</countryCode>
         <unp>300042199</unp>
+        <branchCode></branchCode>
         <name>ОАО "Нафтан"</name>
         <address>211440 Витебская обл.,г. Новополоцк</address>
-    </recipient>
-    <senderReceiver>
-        <consignors/>
-        <consignees/>
-    </senderReceiver>
-    <deliveryCondition/>
-    <roster totalCostVat="3347724" totalExcise="0" totalVat="557954" totalCost="2789770">
-        <rosterItem>
-            <number>0</number>
-            <name>толуол хч</name>
-            <code>2707201000</code>
-            <units>316</units>
-            <count>380</count>
-            <price>7341.5</price>
-            <cost>2789770</cost>
-            <summaExcise>0</summaExcise>
-            <vat>
-                <rate>20</rate>
-                <rateType>DECIMAL</rateType>
-                <summaVat>557954</summaVat>
-            </vat>
-            <costVat>3347724</costVat>
-            <descriptions>
-                <description>DEDUCTION_IN_FULL</description>
-            </descriptions>
-        </rosterItem>
-    </roster>
+  </provider>
+  <recipient>
+    <recipientStatus>CUSTOMER</recipientStatus>
+    <dependentPerson>false</dependentPerson>
+    <residentsOfOffshore>false</residentsOfOffshore>
+    <specialDealGoods>false</specialDealGoods>
+    <bigCompany>false</bigCompany>
+    <countryCode>112</countryCode>
+    <unp>191326771</unp>
+    <name>ЧТУП  "БРИЗМЕТАЛЛ"</name>
+    <address>д. Богатырево, ул.Полесская, д.3, кв.160, Минский р-н, Беларусь</address>
+  </recipient>
+  <senderReceiver>
+    <consignors>
+      <consignor>
+        <countryCode>112</countryCode>
+        <unp>191326771</unp>
+        <name>ЧТУП  "БРИЗМЕТАЛЛ"</name>
+        <address>д. Богатырево, ул.Полесская, д.3, кв.160, Минский р-н, Беларусь</address>
+      </consignor>
+    </consignors>
+    <consignees>
+      <consignee>
+        <countryCode>112</countryCode>
+        <unp>300042199</unp>
+        <name>ОАО "НАФТАН"</name>
+        <address>ОАО "Нафтан", Республика Беларусь, Витебская обл, г.Новополоцк</address>
+      </consignee>
+    </consignees>
+  </senderReceiver>
+  <deliveryCondition>
+    <contract>
+      <number>160219-1-051.01.1634</number>
+	  <date>2016-02-19</date>
+      <documents>
+        <document>
+          <docType>
+            <code>603</code>
+          </docType>
+          <date>2015-12-30</date>
+          <blankCode>401851</blankCode>
+          <seria>ПЖ</seria>
+          <number>0559203</number>
+        </document>
+      </documents>
+    </contract>
+  </deliveryCondition>
+  <roster totalCostVat="609999.610" totalExcise="0.000" totalVat="101666.610" totalCost="11691659.000">
+    <rosterItem>
+      <number>1</number>
+      <name>ОТВОД 90П-219х7П219х7СТ20</name>
+      <code>7307</code>
+      <units>796</units>
+      <count>23.000000</count>
+      <price>508333.000</price>
+      <cost>11691659.000</cost>
+      <summaExcise>0.000</summaExcise>
+      <vat>
+        <rate>20.00</rate>
+        <rateType>DECIMAL</rateType>
+        <summaVat>101666.610</summaVat>
+      </vat>
+      <costVat>609999.610</costVat>
+    </rosterItem>
+  </roster>
 </issuance>

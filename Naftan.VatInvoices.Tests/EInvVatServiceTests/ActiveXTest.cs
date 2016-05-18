@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using EInvVatService;
 using NUnit.Framework;
 
@@ -11,7 +12,7 @@ namespace Naftan.VatInvoices.Tests.EInvVatServiceTests
         public static Connector connector;
         public static int loginRezult;
         private const string portalUrl = "https://vat.gov.by:4443/InvoicesWS/services/InvoicesPort";
-        private const string invoicePath = @"D:\GitHub\Tests\VatInvoices\Naftan.VatInvoices.Tests\Invoices\";
+        private const string invoicePath = @"D:\GitHub\VatInvoices\Naftan.VatInvoices.Tests\Invoices\";
 
         private bool IsLogin
         {
@@ -79,6 +80,16 @@ namespace Naftan.VatInvoices.Tests.EInvVatServiceTests
             if (connector.Connect[portalUrl] != 0) ThrowException("Ошибка подключения");
             var eDoc = connector.CreateEDoc;
             if (eDoc.Document.LoadFromFile[XmlInvoice] != 0) ThrowException("Ошибка чтения файла");
+
+            var z = eDoc.Document.GetData[0];
+            var s = eDoc.Document.GetData[1];
+
+            var z64 = Convert.ToBase64String(Encoding.Default.GetBytes(z));
+
+
+            var zz = eDoc.Document.SetData[z64, 1];
+
+
             if (eDoc.Sign[0] != 0) ThrowException("Ошибка подписи");
             if (connector.SendEDoc[eDoc] != 0) ThrowException("Ошибка отправки");
         }
@@ -96,7 +107,7 @@ namespace Naftan.VatInvoices.Tests.EInvVatServiceTests
 
             if (ticket.Accepted != 0)
             {
-                Console.Write(ticket.Message);
+                Console.Write("Ошибка сервиса: "+ticket.Message);
             }
 
         }
