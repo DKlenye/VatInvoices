@@ -37,6 +37,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -63,6 +65,12 @@
     <Compile Include="Extensions\DapperQueryObjectExtensions.cs" />
     <Compile Include="Extensions\StringApplyTemplateExtension.cs" />
     <Compile Include="Extensions\StringConvertToEnumExtension.cs" />
+    <Compile Include="Impl\PortalService.cs" />
+    <Compile Include="Impl\VatInvoiceSerializer.cs" />
+    <Compile Include="IPortalService.cs" />
+    <Compile Include="IVatInvoiceSerializer.cs" />
+    <Compile Include="SignUpAndSendInfo.cs" />
+    <Compile Include="SignUpAndSendRezult.cs" />
     <Compile Include="Impl\VatInvoiceService.cs" />
     <Compile Include="IVatInvoiceService.cs" />
     <Compile Include="Mnsati\Additional\MNSATI_additional.cs">
@@ -78,10 +86,14 @@
       <DependentUpon>MNSATI_original.xsd</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\AbstractQuery.cs" />
+    <Compile Include="Queries\InsertVatInvoiceQuery.cs" />
+    <Compile Include="Queries\SelectVatInvoiceQuery.cs" />
     <Compile Include="QueryObjects\InsertConsignee.cs" />
     <Compile Include="QueryObjects\InsertDocument.cs" />
+    <Compile Include="QueryObjects\InsertRoster.cs" />
     <Compile Include="QueryObjects\InsertVatInvoice.cs" />
-    <Compile Include="QueryObjects\InsetConsignor.cs" />
+    <Compile Include="QueryObjects\InsertConsignor.cs" />
     <Compile Include="QueryObjects\QueryObject.cs" />
     <Compile Include="QueryObjects\SelectConsignee.cs" />
     <Compile Include="QueryObjects\SelectConsignor.cs" />
@@ -89,7 +101,10 @@
     <Compile Include="QueryObjects\SelectRoster.cs" />
     <Compile Include="QueryObjects\SelectVatInvoice.cs" />
     <Compile Include="QueryObjects\SelectVatInvoiceDto.cs" />
-    <Compile Include="Serialization\VatInvoiceSerializer.cs" />
+    <Compile Include="QueryObjects\UpdateVatInvoice.cs" />
+    <Compile Include="StatusInfo.cs" />
+    <Compile Include="Users\CurrentUser.cs" />
+    <Compile Include="Users\UserRoles.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mnsati\Additional\GenerateSchema.bat" />
