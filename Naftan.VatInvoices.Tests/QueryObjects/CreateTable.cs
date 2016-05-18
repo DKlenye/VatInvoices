@@ -193,6 +193,7 @@ namespace Naftan.VatInvoices.Tests.QueryObjects
 	                [ReplicationSourceId] [int] NULL,
 	                [ReplicationId] [int] NULL,
 	                [BuySaleTypeId] [tinyint] NOT NULL,
+                    [AccountingDate] [date] NULL,
 	                [VatAccount] [nvarchar](8) NULL,
 	                [Account] [nvarchar](8) NULL,
 	                [StatusId] [tinyint] NOT NULL,
@@ -250,6 +251,7 @@ namespace Naftan.VatInvoices.Tests.QueryObjects
 	                [RosterTotalVat] [decimal](18, 3) NULL,
 	                [RosterTotalCost] [decimal](18, 3) NULL,
 	                [ApproveDate] [datetime] NULL,
+                    [ApproveUser] [nvarchar] (100) NULL,
 	                [Xml] [xml] NULL,
                  CONSTRAINT [PK_VatInvoice] PRIMARY KEY CLUSTERED 
                 (
@@ -302,7 +304,7 @@ namespace Naftan.VatInvoices.Tests.QueryObjects
             return new QueryObject(
                 @"CREATE TABLE [dbo].[Documents](
 	                [Id] [int] IDENTITY(1,1) NOT NULL,
-	                [ReplicationId] [int] NOT NULL,
+	                [ReplicationId] [int] NULL,
 	                [InvoiceId] [int] NOT NULL,
 	                [DocTypeCode] [nvarchar](50) NULL,
 	                [DocTypeValue] [nvarchar](50) NULL,
@@ -323,7 +325,6 @@ namespace Naftan.VatInvoices.Tests.QueryObjects
             return new QueryObject(
                 @"CREATE TABLE [dbo].[RosterList](
 	                [Id] [int] IDENTITY(1,1) NOT NULL,
-	                [ReplicationId] [int] NULL,
 	                [InvoiceId] [int] NOT NULL,
 	                [Number] [int] NULL,
 	                [Name] [nvarchar](100) NULL,

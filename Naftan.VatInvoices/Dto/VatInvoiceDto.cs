@@ -15,6 +15,9 @@ namespace Naftan.VatInvoices.Dto
         [DisplayName("Входящий ЭСЧФ")]
         public bool IsIncome { get; set; }
 
+        [DisplayName("Дата бухг.")]
+        public DateTime AccountingDate { get; set; }
+
         [DisplayName("Учётная система")]
         public int? ReplicationSourceId { get; set; }
 
@@ -199,6 +202,10 @@ namespace Naftan.VatInvoices.Dto
 
         [DisplayName("Дата подтверждения бухгалтером")]
         public DateTime? ApproveDate { get; set; }
+
+        [DisplayName("Подтверждено бухгалтером")]
+        public string ApproveUser { get; set; }
+        
 
     }
 }
