@@ -2,14 +2,14 @@
 
 namespace Naftan.VatInvoices.QueryObjects
 {
-    public class InsetConsignor
+    public class InsertConsignor
     {
         public QueryObject Query(Consignor consignor)
         {
             return new QueryObject(@"
                 INSERT INTO Consignors
                 (
-	                ConsigneeCounteragentId,
+	                ConsignorCounteragentId,
 	                InvoiceId,
 	                CountryCode,
 	                Unp,
@@ -24,7 +24,7 @@ namespace Naftan.VatInvoices.QueryObjects
 	               @Unp,
 	               @Name,
 	               @Address
-                ); select SCOPE_EDENTITY();
+                ); select SCOPE_IDENTITY();
             ", new
              {
                  consignor.ConsignorCounteragentId,

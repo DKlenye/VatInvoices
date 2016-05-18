@@ -21,7 +21,8 @@ namespace Naftan.VatInvoices.QueryObjects
                     BuySaleTypeId as BuySaleType,
                     VatAccount, 
                     Account, 
-                    StatusId as InvoiceStatus, 
+                    AccountingDate,
+                    StatusId as Status, 
                     Sender, 
                     NumberString,
                     DateIssuance, 
@@ -88,6 +89,11 @@ namespace Naftan.VatInvoices.QueryObjects
             return new QueryObject(All().Sql + " WHERE InvoiceId = {id}".ApplyTemplate(new {id}));
         }
 
+        public QueryObject ById(int[] ids)
+        {
+            return new QueryObject(All().Sql + "WHERE InvoiceId in @ids ", new { ids });
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -97,5 +103,7 @@ namespace Naftan.VatInvoices.QueryObjects
         {
             return new QueryObject(All().Sql + " WHERE NumberString = {number}".ApplyTemplate(new { number }));
         }
+
+       
     }
 }

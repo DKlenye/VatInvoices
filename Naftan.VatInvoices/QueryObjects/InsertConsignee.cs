@@ -24,7 +24,7 @@ namespace Naftan.VatInvoices.QueryObjects
 	               @Unp,
 	               @Name,
 	               @Address
-                ); select SCOPE_EDENTITY();
+                ); select SCOPE_IDENTITY();
             ",new
             {
                 consignee.ConsigneeCounteragentId,

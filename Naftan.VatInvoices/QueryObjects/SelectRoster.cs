@@ -27,7 +27,7 @@ namespace Naftan.VatInvoices.QueryObjects
 	            Cost,
 	            SummaExcise,
 	            VatRate,
-	            VatRateTypeId,
+	            VatRateTypeId ,
 	            SummaVat,
 	            CostVat,
 	            [Description] 
