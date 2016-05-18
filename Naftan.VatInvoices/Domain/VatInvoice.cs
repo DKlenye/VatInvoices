@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Naftan.VatInvoices.Extensions;
+using Naftan.VatInvoices.Mnsati.Original;
 
 namespace Naftan.VatInvoices.Domain
 {
+    /// <summary>
+    /// ЭСЧФ
+    /// </summary>
     public class VatInvoice
     {
 
@@ -13,17 +17,18 @@ namespace Naftan.VatInvoices.Domain
         public int? ReplicationSourceId { get; set; }
 
         public BuySaleType BuySaleType { get; set; }
-        public InvoiceStatus InvoiceStatus { get; set; }
+        public InvoiceStatus Status { get; set; }
         public InvoiceType InvoiceType { get; set; }
 
         public object IsIncome { get; set; }
         public int? ReplicationId { get; set; }
         public string VatAccount { get; set; }
+        public DateTime AccountingDate { get; set; }
         public string Account { get; set; }
         public string Sender { get; set; }
-        public VatInvoiceNumber Number { get; set; }
+        public VatInvoiceNumber VatNumber { get; set; }
         public DateTime? DateIssuance { get; set; }
-        public DateTime DateTransaction { get; set; }
+        public DateTime? DateTransaction { get; set; }
         public string OriginalInvoiceNumber { get; set; }
         public bool? SendToRecipient { get; set; }
         public DateTime? DateCancelled { get; set; }
@@ -31,10 +36,10 @@ namespace Naftan.VatInvoices.Domain
         #region Provider (Поставщик)
         public int? ProviderCounteragentId { get; set; }
         public ProviderStatus ProviderStatus { get; set; }
-        public bool? ProviderDependentPerson { get; set; }
-        public bool? ProviderResidentsOfOffshore { get; set; }
-        public bool? ProviderSpecialDealGoods { get; set; }
-        public bool? ProviderBigCompany { get; set; }
+        public bool ProviderDependentPerson { get; set; }
+        public bool ProviderResidentsOfOffshore { get; set; }
+        public bool ProviderSpecialDealGoods { get; set; }
+        public bool ProviderBigCompany { get; set; }
         public int? ProviderCountryCode { get; set; }
         public string ProviderUnp { get; set; }
         public string ProviderBranchCode { get; set; }
@@ -54,10 +59,10 @@ namespace Naftan.VatInvoices.Domain
         #region Recipient(Получатель)
         public int? RecipientCounteragentId { get; set; }
         public RecipientStatus RecipientStatus { get; set; }
-        public bool? RecipientDependentPerson { get; set; }
-        public bool? RecipientResidentsOfOffshore { get; set; }
-        public bool? RecipientSpecialDealGoods { get; set; }
-        public bool? RecipientBigCompany { get; set; }
+        public bool RecipientDependentPerson { get; set; }
+        public bool RecipientResidentsOfOffshore { get; set; }
+        public bool RecipientSpecialDealGoods { get; set; }
+        public bool RecipientBigCompany { get; set; }
         public int? RecipientCountryCode { get; set; }
         public string RecipientUnp { get; set; }
         public string RecipientBranchCode { get; set; }
@@ -72,16 +77,17 @@ namespace Naftan.VatInvoices.Domain
         #region Contract(Договор)
         public int? ContractId { get; set; }
         public string ContractNumber { get; set; }
-        public DateTime? ContractDate { get; set; }
+        public DateTime ContractDate { get; set; }
         public string ContractDescription { get; set; }
         #endregion
 
-        public decimal? RosterTotalCostVat { get; set; }
-        public decimal? RosterTotalExcise { get; set; }
-        public decimal? RosterTotalVat { get; set; }
-        public decimal? RosterTotalCost { get; set; }
+        public decimal RosterTotalCostVat { get; set; }
+        public decimal RosterTotalExcise { get; set; }
+        public decimal RosterTotalVat { get; set; }
+        public decimal RosterTotalCost { get; set; }
 
         public DateTime? ApproveDate { get; set; }
+        public string ApproveUser { get; set; }
 
         public string Xml { get; set; }
 
@@ -90,13 +96,28 @@ namespace Naftan.VatInvoices.Domain
         public IEnumerable<Document> Documents { get; set; } 
         public IEnumerable<Roster> RosterList { get; set; }
 
-        public void Approve()
+            
+        /// <summary>
+        /// Подтверждение счёта фактуры для передачи на портал МНС
+        /// </summary>
+        public void Approve(string user)
         {
-            if(!IsApprove) ApproveDate = DateTime.Now;
+            if (!IsApprove)
+            {
+                ApproveDate = DateTime.Now;
+                ApproveUser = user;
+            }
+
         }
 
         public bool IsApprove { get { return ApproveDate != null; } }
         
+
+        public void SetStatus(InvoiceStatus status)
+        {
+            Status = status;
+        }
+
 
         /// <summary>
         /// Построить исходный ЭСЧФ из объекта по формату портала МНС
@@ -115,13 +136,13 @@ namespace Naftan.VatInvoices.Domain
             var consignors = original.senderReceiver.consignors;
             var roster = original.roster;
 
-            var invoice = new VatInvoice()
+            var invoice = new VatInvoice
             {
                 BuySaleType = BuySaleType.Buy,
                 IsIncome = true,
 
                 Sender = original.sender,
-                Number = new VatInvoiceNumber(general.number),
+                VatNumber = new VatInvoiceNumber(general.number),
                 DateIssuance = general.dateIssuance,
                 DateTransaction = general.dateTransaction,
                 InvoiceType = general.documentType.ToString().ConvertToEnum<InvoiceType>(),
@@ -245,6 +266,161 @@ namespace Naftan.VatInvoices.Domain
         {
             return new VatInvoice();
         }
+
+        public Mnsati.Original.issuance ToIssuanceOriginal()
+        {
+            var issuance = new issuance
+            {
+                sender = Sender,
+                general = new general
+                {
+                    //dateIssuance = DateIssuance??new DateTime(),
+                    dateTransaction = DateTransaction??new DateTime(),
+                    dateTransactionSpecified = DateTransaction!=null,
+                    documentType = invoiceDocType.ORIGINAL,
+                    number = VatNumber.NumberString
+                },
+                provider = new provider
+                {
+                    address = ProviderAddress,
+                    bigCompany = ProviderBigCompany,
+                    branchCode = ProviderBranchCode,
+                    countryCode = ProviderCountryCode.ToString(),
+                    dateActualExport = DateActualExport ?? new DateTime(),
+                    dateActualExportSpecified = DateActualExport != null,
+                    dateRelease = DateRelease ?? new DateTime(),
+                    dateReleaseSpecified = DateRelease != null,
+                    declaration = ProviderDeclaration,
+                    dependentPerson = ProviderDependentPerson,
+                    name = ProviderName,
+                    principal = PrincipalInvoiceDate != null
+                        ? new forInvoiceType
+                        {
+                            date = PrincipalInvoiceDate.Value,
+                            number = PrincipalInvoiceNumber
+                        }
+                        : null,
+                    providerStatus = ProviderStatus.ToString().ConvertToEnum<providerStatusType>(),
+                    residentsOfOffshore = ProviderResidentsOfOffshore,
+                    specialDealGoods = ProviderSpecialDealGoods,
+                    taxes = ProviderTaxeDate != null
+                        ? new taxesType()
+                        {
+                            date = ProviderTaxeDate.Value,
+                            number = ProviderTaxeNumber
+                        }
+                        : null,
+                    unp = ProviderUnp,
+                    vendor = VendorInvoiceDate != null
+                        ? new forInvoiceType
+                        {
+                            date = VendorInvoiceDate.Value,
+                            number = VendorInvoiceNumber
+                        }
+                        : null
+                },
+                recipient = new recipient
+                {
+                    address = RecipientAddress,
+                    bigCompany = RecipientBigCompany,
+                    branchCode = RecipientBranchCode,
+                    countryCode = RecipientCountryCode.ToString(),
+                    declaration = RecipientDeclaration,
+                    dateImport = DateImport ?? new DateTime(),
+                    dateImportSpecified = DateImport != null,
+                    dependentPerson = RecipientDependentPerson,
+                    name = RecipientName,
+                    residentsOfOffshore = RecipientResidentsOfOffshore,
+                    recipientStatus = RecipientStatus.ToString().ConvertToEnum<recipientStatusType>(),
+                    specialDealGoods = RecipientSpecialDealGoods,
+                    taxes = RecipientTaxeDate != null
+                        ? new taxesType
+                        {
+                            date = RecipientTaxeDate.Value,
+                            number = RecipientTaxeNumber
+                        }
+                        : null,
+                    unp = RecipientUnp
+                },
+                deliveryCondition = new deliveryCondition
+                {
+                    contract = new contract
+                    {
+                        date = ContractDate,
+                        number = ContractNumber,
+                        documents = Documents.Select(x => new document
+                        {
+                            blankCode = x.BlancCode,
+                            date = x.Date,
+                            number = x.Number,
+                            seria = x.Seria,
+                            docType = new docType
+                            {
+                                code = x.DocTypeCode,
+                                value = x.DocTypeValue
+                            }
+                        }).ToArray()
+                    },
+                    description = ContractDescription
+                },
+                senderReceiver = new senderReceiver
+                {
+                    consignees = Consignees.Select(c => new consignee
+                    {
+                        address = c.Address,
+                        countryCode = c.CountryCode.ToString(),
+                        name = c.Name,
+                        unp = c.Unp
+                    }).ToArray(),
+                    consignors = Consignors.Select(c => new consignor
+                    {
+                        address = c.Address,
+                        countryCode = c.CountryCode.ToString(),
+                        name = c.Name,
+                        unp = c.Unp
+                    }).ToArray(),
+                },
+                roster = new rosterList
+                {
+                    totalCost = RosterTotalCost,
+                    totalCostVat = RosterTotalCostVat,
+                    totalExcise = RosterTotalExcise,
+                    totalVat = RosterTotalVat,
+                    rosterItem = RosterList.Select(r => new rosterItem
+                    {
+                        code = r.Code,
+                        code_oced = r.CodeOced,
+                        cost = r.Cost,
+                        costVat = r.CostVat,
+                        count = r.Count ?? 0,
+                        countSpecified = r.Count != null,
+                        descriptions =
+                            r.Description == null
+                                ? null
+                                : new[] {r.Description.ToString().ConvertToEnum<descriptionType>()},
+                        name = r.Name,
+                        number = r.Number.ToString(),
+                        price = r.Price ?? 0,
+                        priceSpecified = r.Price != null,
+                        summaExcise = r.SummaExcise ?? 0,
+                        summaExciseSpecified = r.SummaExcise != null,
+                        units = r.Units,
+                        vat = new vat
+                        {
+                            rate = r.VatRate,
+                            rateType = r.VatRateType.ToString().ConvertToEnum<rateType>(),
+                            summaVat = r.SummaVat
+                        }
+
+                    }).ToArray()
+                }
+
+            };
+
+            return issuance;
+
+        }
+
 
     }
 }

@@ -6,6 +6,11 @@ namespace Naftan.VatInvoices.Domain
     public class VatInvoiceNumber
     {
 
+        public VatInvoiceNumber()
+        {
+            
+        }
+
         public VatInvoiceNumber(string numberString)
         {
             if (!CheckFormat(numberString))
