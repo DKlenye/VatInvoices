@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Xml;
-using System.Xml.Serialization;
+using System.Linq;
 using Naftan.VatInvoices.Domain;
 using Naftan.VatInvoices.Dto;
 using Naftan.VatInvoices.Extensions;
-using Naftan.VatInvoices.Mnsati.Original;
+using Naftan.VatInvoices.Queries;
 using Naftan.VatInvoices.QueryObjects;
+using Naftan.VatInvoices.Users;
 
 namespace Naftan.VatInvoices.Impl
 {
@@ -24,6 +24,18 @@ namespace Naftan.VatInvoices.Impl
         ///  url адрес веб сервиса портала МНС
         /// </summary>
         public static string PortalUrl = "https://vat.gov.by:4443/InvoicesWS/services/InvoicesPort";
+
+        private IPortalService portal;
+
+        public VatInvoiceService(IPortalService portal)
+        {
+            this.portal = portal;
+        }
+
+        public VatInvoiceService()
+        {
+            portal = new PortalService();
+        }
 
         public IEnumerable<VatInvoiceDto> LoadVatInvoices(int? period = null)
         {
@@ -70,25 +82,95 @@ namespace Naftan.VatInvoices.Impl
             }
         }
 
-        public VatInvoiceDto ApproveVatInvoice(int invoiceId)
+        public IEnumerable<VatInvoiceDto> ApproveVatInvoice(params int[] invoiceId)
         {
-            throw new System.NotImplementedException();
-        }
-        
-        public void SignUpAndSend(params int[] id)
-        {
-            throw new System.NotImplementedException();
-        }
-        
-        public void SaveXml(string str)
-        {
-            var reader = XmlReader.Create(str);
-            var serializer = new XmlSerializer(typeof (issuance));
-            var o = (issuance) serializer.Deserialize(reader);
+            using (var connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                var userName = CurrentUser.Name;
+                var invoices = connection.Query<VatInvoice>(new SelectVatInvoice().ById(invoiceId));
+
+                invoices.ToList().ForEach(x =>
+                {
+                    x.Approve(userName);
+                    connection.Execute(new UpdateVatInvoice().Query(x));
+                });
+                
+                return connection.Query<VatInvoiceDto>(new SelectVatInvoiceDto().ById(invoiceId));
+            }
         }
 
+        public IEnumerable<SignUpAndSendRezult> SignUpAndSend (params int[] id)
+        {
 
+            var rezult = new List<SignUpAndSendRezult>();
 
+            //Загружаем полную информацию по ЭСЧФ
+            var invoices = new List<VatInvoice>();
+            using (var connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                id.ToList().ForEach(i => invoices.Add(new SelectVatInvoiceQuery(connection,i).Query()));
+            }
+
+            var info = portal.SignUpAndSend(invoices.ToArray());
+
+            using (var connection = new SqlConnection(ConnectionString))
+            {
+                info.ToList().ForEach(i =>
+                {
+                    var invoice = i.Invoice;
+                    if (!i.IsException)
+                    {
+                        invoice.SetStatus(InvoiceStatus.COMPLETED);
+                        connection.Execute(new UpdateVatInvoice().Query(invoice));
+                    }
+
+                    rezult.Add(new SignUpAndSendRezult(
+                        connection.Query<VatInvoiceDto>(new SelectVatInvoiceDto().ById(invoice.InvoiceId)).Single(),
+                        i.Message,
+                        i.IsException
+                        ));
+                });
+            }
+
+            return rezult;
+            
+        }
+
+        public IEnumerable<VatInvoiceDto> CheckStatus()
+        {
+
+            IEnumerable<VatInvoice> invoices;
+            using (var connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                invoices = connection.Query<VatInvoice>(new SelectVatInvoice().ForCheck());
+            }
+
+            var checkInfo = portal.CheckStatus(invoices.ToArray());
+            var statusChanged = new List<VatInvoice>();
+            checkInfo.ToList().ForEach(i =>
+            {
+                var invoice = i.Invoice;
+                var status = i.Status.ToString().ConvertToEnum<InvoiceStatus>();
+
+                if (invoice.Status != status)
+                {
+                    invoice.SetStatus(status);
+                    statusChanged.Add(invoice);
+                }
+            });
+
+            using (var connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                statusChanged.ForEach(s=>connection.Execute(new UpdateVatInvoice().Query(s)));
+                return connection.Query<VatInvoiceDto>(
+                        new SelectVatInvoiceDto().ById(statusChanged.Select(x => x.InvoiceId).ToArray()));
+            }
+
+        }
 
     }
 }

@@ -48,13 +48,18 @@ namespace Naftan.VatInvoices
         /// Подтверждение проверки информации от ответственного бухгалтера
         /// </summary>
         /// <param name="invoiceId"></param>
-        VatInvoiceDto ApproveVatInvoice(int invoiceId);
+        IEnumerable<VatInvoiceDto> ApproveVatInvoice(params int[] invoiceId);
         
         /// <summary>
         /// Подписать и отправить ЭСЧФ на портал налоговой
         /// </summary>
         /// <param name="invoiceId">Id (Ключ) ЭСЧФ</param>
-        void SignUpAndSend(params int[] invoiceId);
-        
+        IEnumerable<SignUpAndSendRezult> SignUpAndSend(params int[] invoiceId);
+
+        /// <summary>
+        /// Проверить статус выставленных ЭСЧФ
+        /// </summary>
+        IEnumerable<VatInvoiceDto> CheckStatus();
+
     }
 }
