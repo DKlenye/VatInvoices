@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.w3schools.com"
+           xmlns="http://www.w3schools.com" elementFormDefault="qualified">
+
+  <xs:element name="issuance">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="general" type="general"/>
+      </xs:sequence>
+      <xs:attribute name="sender" use="required" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="general">
+    <xs:annotation>
+      <xs:documentation>Общий раздел</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="invoice" type="invoiceFormat"/>
+      <xs:element name="documentType" type="invoiceDocType"/>
+      <xs:element name="dateCancelled" type="xs:date"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="invoiceFormat">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d{9}\-\d{4}\-\d{10}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+    <xs:simpleType name="invoiceDocType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ORIGINAL"/>
+            <xs:enumeration value="ADDITIONAL"/>
+            <xs:enumeration value="FIXED"/>
+            <xs:enumeration value="ADD_NO_REFERENCE"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

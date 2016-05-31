@@ -4,21 +4,22 @@ using System.Linq;
 using System.Text;
 using EInvVatService;
 using Naftan.VatInvoices.Domain;
+using Naftan.VatInvoices.Dto;
 
 namespace Naftan.VatInvoices.Impl
 {
     public class PortalService : IPortalService
     {
-        public static string portalUrl = "https://vat.gov.by:4443/InvoicesWS/services/InvoicesPort";
-
-        private bool isLogged;
+        private readonly string portalUrl;
         private readonly Connector connector;
         private readonly IVatInvoiceSerializer serializer;
+        private bool isLogged;
 
-        public PortalService()
+        public PortalService(string portalUrl, Connector connector, IVatInvoiceSerializer serializer)
         {
-            connector = new Connector();
-            serializer = new VatInvoiceSerializer();
+            this.connector = connector;
+            this.serializer = serializer;
+            this.portalUrl = portalUrl;
         }
 
         private void Login()
@@ -45,64 +46,151 @@ namespace Naftan.VatInvoices.Impl
         {
             return String.Format("{0} {1}", message, connector.LastError);
         }
+
         private void ThrowException(string message)
         {
             throw new Exception(ExceptionMessage(message));
         }
-        
-        public IEnumerable<SignUpAndSendInfo> SignUpAndSend(params VatInvoice[] invoice)
+
+        public IEnumerable<SendOutInfo> SignAndSendOut(params VatInvoice[] invoices)
         {
-
-            var info = new List<SignUpAndSendInfo>();
-
+            var info = new List<SendOutInfo>();
             Connect();
-            
-            invoice.ToList().ForEach(x =>
+            invoices.ToList().ForEach(x =>
             {
-                SignUpAndSendInfo i;
+                SendOutInfo i;
                 var stringXml = serializer.Serialize(x);
-                var xml = Convert.ToBase64String(Encoding.Default.GetBytes(stringXml));
+                var xml = Convert.ToBase64String(Encoding.UTF8.GetBytes(stringXml));
                 var eDoc = connector.CreateEDoc;
-                if (eDoc.Document.SetData[xml, 1] != 0) i = new SignUpAndSendInfo(x,true,ExceptionMessage("Ошибка загрузки информации"));
+                if (eDoc.Document.SetData[xml, 1] != 0)
+                    i = new SendOutInfo(x, true, ExceptionMessage("Ошибка загрузки информации"));
                 else
                 {
-                    var z = eDoc.Document.GetData[0];
-
-                    Console.Write(eDoc.Document.GetData[0]);
-                    if (eDoc.Sign[0] != 0) i = new SignUpAndSendInfo(x,true, ExceptionMessage("Ошибка подписи"));
+                    if (eDoc.Sign[0] != 0) i = new SendOutInfo(x, true, ExceptionMessage("Ошибка подписи"));
                     else
                     {
-                        if (connector.SendEDoc[eDoc] != 0) i = new SignUpAndSendInfo(x,true, ExceptionMessage("Ошибка отправки"));
+                        if (connector.SendEDoc[eDoc] != 0)
+                            i = new SendOutInfo(x, true, ExceptionMessage("Ошибка отправки"));
                         else
                         {
                             var ticket = connector.Ticket;
 
-                            if (ticket.Accepted != 0) i = new SignUpAndSendInfo(x,true, ticket.Message);
-                            else i = new SignUpAndSendInfo(x,false, ticket.Message);
+                            if (ticket.Accepted != 0)
+                            {
+                                i = new SendOutInfo(x, true, ticket.Message);
+                            }
+                            else
+                            {
+
+                                i = new SendOutInfo(
+                                    x,
+                                    false,
+                                    ticket.Message,
+                                    Encoding.UTF8.GetString(Convert.FromBase64String(eDoc.Document.GetData[1])),
+                                    eDoc.GetData[0]
+                                    );
+                            }
                         }
                     }
                 }
-                
+
                 info.Add(i);
-                
             });
             Disconnect();
             return info;
         }
+        
+        public IEnumerable<SendInInfo> SignAndSendIn(params VatInvoiceXml[] invoices)
+        {
+            var info = new List<SendInInfo>();
+            Connect();
+                invoices.ToList().ForEach(x =>
+                {
+                    SendInInfo i;
+                    var eDoc = connector.CreateEDoc;
+                    if (eDoc.SetData[x.SignXml, 1] != 0)
+                        i = new SendInInfo(x, true, ExceptionMessage("Ошибка загрузки информации "));
+                    else
+                    {
+                        if (eDoc.GetSignCount == 0)
+                            i = new SendInInfo(x, true, ExceptionMessage("Документ не содержит ЭЦП "));
+                        else {
+                            if (eDoc.VerifySign[1, 0] != 0)
+                                i = new SendInInfo(x, true, ExceptionMessage("Ошибка проверки подписи "));
+                            else
+                            {
+                                if (eDoc.Sign[0] != 0) i = new SendInInfo(x, true, ExceptionMessage("Ошибка подписи"));
+                                else
+                                {
+                                    if (connector.SendEDoc[eDoc] != 0)
+                                        i = new SendInInfo(x, true, ExceptionMessage("Ошибка отправки"));
+                                    else
+                                    {
+                                        var ticket = connector.Ticket;
 
-        public IEnumerable<StatusInfo> CheckStatus(params VatInvoice[] invoices)
+                                        if (ticket.Accepted != 0)
+                                        {
+                                            i = new SendInInfo(x, true, ticket.Message);
+                                        }
+                                        else
+                                        {
+                                            x.Sign2Xml = eDoc.GetData[1];
+
+                                            i = new SendInInfo(
+                                                x,
+                                                false,
+                                                ticket.Message
+                                                );
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            Disconnect();
+            return info;
+        }
+
+        public IEnumerable<StatusInfo> CheckStatus(params VatInvoiceDto[] invoices)
         {
             var info = new List<StatusInfo>();
             Connect();
             invoices.ToList().ForEach(i =>
             {
-                var status = connector.GetStatus[i.VatNumber.NumberString];
-                if(status.Verify !=0) ThrowException("Ошибка верификации статуса: ");
-                //if (status.SaveToFile["D:\\status.xml"] != 0) ThrowException("");
+                var status = connector.GetStatus[i.NumberString];
+                if (status.Verify != 0) ThrowException("Ошибка верификации статуса: ");
                 info.Add(new StatusInfo(i, status.Status, status.Message, status.Since));
-                
+
             });
             Disconnect();
+            return info;
+        }
+
+        public IEnumerable<LoadInfo> LoadIncomeVatInvoice(DateTime date)
+        {
+            var info = new List<LoadInfo>();
+
+            Connect();
+            var list = connector.GetList[date.ToString("s")];
+            if (list != null)
+            {
+                for (var i = list.Count; i != 0; i++)
+                {
+                    var number = list.GetItemAttribute[i, "document/number"];
+                    var eDoc = connector.GetEDoc[number];
+                    var signXml = eDoc.GetData[1];
+                    var xml = eDoc.Document.GetData[1];
+
+                    info.Add(new LoadInfo(number,xml,signXml));
+                }
+            }
+            else
+            {
+                ThrowException("Ошибка получения списка ЭСЧФ ");    
+            }
+            Disconnect();
+            
             return info;
         }
     }

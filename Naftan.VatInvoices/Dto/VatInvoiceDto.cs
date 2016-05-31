@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using Naftan.VatInvoices.Domain;
+using Naftan.VatInvoices.Mnsati;
 
 namespace Naftan.VatInvoices.Dto
 {
@@ -15,7 +16,7 @@ namespace Naftan.VatInvoices.Dto
         [DisplayName("Входящий ЭСЧФ")]
         public bool IsIncome { get; set; }
 
-        [DisplayName("Дата бухг.")]
+        [DisplayName("Дата бухг. учёта")]
         public DateTime AccountingDate { get; set; }
 
         [DisplayName("Учётная система")]
@@ -27,11 +28,20 @@ namespace Naftan.VatInvoices.Dto
         [DisplayName("Счёт НДС")]
         public string VatAccount { get; set; }
 
+        [DisplayName("Наименование счёта НДС")]
+        public string VatAccountName { get; set; }
+
         [DisplayName("Бухгалтерский счёт")]
         public string Account { get; set; }
 
+        [DisplayName("Наименование счёта")]
+        public string AccountName { get; set; }
+
         [DisplayName("Статус ЭСЧФ")]
         public InvoiceStatus InvoiceStatus { get; set; }
+
+        [DisplayName("Информация по статусу")]
+        public string StatusMessage { get; set; }
 
         [DisplayName("УНП отправителя")]
         public string Sender { get; set; }
@@ -46,7 +56,7 @@ namespace Naftan.VatInvoices.Dto
         public DateTime DateTransaction { get; set; }
 
         [DisplayName("Тип ЭСЧФ")]
-        public InvoiceType InvoiceType { get; set; }
+        public invoiceDocType InvoiceType { get; set; }
 
         [DisplayName("№ исходномго ЭСЧФ")]
         public string OriginalInvoiceNumber { get; set; }
@@ -63,7 +73,7 @@ namespace Naftan.VatInvoices.Dto
         public int? ProviderCounteragentId { get; set; }
 
         [DisplayName("Статус поставщика")]
-        public ProviderStatus ProviderStatus { get; set; }
+        public providerStatusType ProviderStatus { get; set; }
 
         [DisplayName("Взаимозависимое лицо")]
         public bool? ProviderDependentPerson { get; set; }
@@ -127,21 +137,21 @@ namespace Naftan.VatInvoices.Dto
         public int? RecipientCounteragentId { get; set; }
 
         [DisplayName("Статус получателя (по договору/контракту)")]
-        public RecipientStatus RecipientStatus { get; set; }
+        public recipientStatusType RecipientStatus { get; set; }
 
         [DisplayName("Взаимозависимое лицо")]
-        public bool? RecipientDependentPerson { get; set; }
+        public bool RecipientDependentPerson { get; set; }
 
         [DisplayName("Резидент оффшорной зоны")]
-        public bool? RecipientResidentsOfOffshore { get; set; }
+        public bool RecipientResidentsOfOffshore { get; set; }
 
         [DisplayName(
             "Сделка с товарами по перечню, определяемому Правительством Республики Беларусь, в соответствии с пп. 1.3 п. 1 ст. 30-1 НК"
             )]
-        public bool? RecipientSpecialDealGoods { get; set; }
+        public bool RecipientSpecialDealGoods { get; set; }
 
         [DisplayName("Организация, включённая в перечень крупных плательщиков")]
-        public bool? RecipientBigCompany { get; set; }
+        public bool RecipientBigCompany { get; set; }
 
         [DisplayName("Код страны")]
         public int? RecipientCountryCode { get; set; }
@@ -189,23 +199,25 @@ namespace Naftan.VatInvoices.Dto
         #endregion
 
         [DisplayName("В том числе сумма акциза, бел.руб")]
-        public decimal? RosterTotalExcise { get; set; }
+        public decimal RosterTotalExcise { get; set; }
 
         [DisplayName("сумма НДС, бел.руб")]
-        public decimal? RosterTotalVat { get; set; }
+        public decimal RosterTotalVat { get; set; }
 
         [DisplayName("Стоимость товаров (работ, услуг), имущественных прав без НДС, бел.руб")]
-        public decimal? RosterTotalCost { get; set; }
+        public decimal RosterTotalCost { get; set; }
 
         [DisplayName("Итоговая стоимость товаров (работ, услуг), имущественных прав с учетом НДС, бел.руб")]
-        public decimal? RosterTotalCostVat { get; set; }
+        public decimal RosterTotalCostVat { get; set; }
 
         [DisplayName("Дата подтверждения бухгалтером")]
         public DateTime? ApproveDate { get; set; }
 
         [DisplayName("Подтверждено бухгалтером")]
         public string ApproveUser { get; set; }
-        
 
+        [DisplayName("Подтверждение вывоза ")]
+        public DateTime? ApproveDateExport { get; set; }
+        
     }
 }

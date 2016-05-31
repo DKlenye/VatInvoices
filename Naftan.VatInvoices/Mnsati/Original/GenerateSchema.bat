@@ -1,1 +1,1 @@
-"c:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 4.0 Tools\xsd.exe" /c "D:\GitHub\Naftan.VatInvoices\Naftan.VatInvoices.Serialization\Original\MNSATI_original.xsd" /n:"Naftan.VatInvoices.Serialization.Original" /f
+"c:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 4.0 Tools\xsd.exe" /c "..\xsd\MNSATI_original.xsd" /n:"Naftan.VatInvoices.Mnsati.Original" /f

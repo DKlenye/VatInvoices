@@ -16,7 +16,7 @@ namespace Naftan.VatInvoices.Tests.Users
         [Test]
         public void RolesTest()
         {
-            CurrentUser.Roles.ToList().ForEach(Console.Write);
+            CurrentUser.Roles.ToList().ForEach(x=>Console.Write(x.ToString()));
         }
 
         [Test]

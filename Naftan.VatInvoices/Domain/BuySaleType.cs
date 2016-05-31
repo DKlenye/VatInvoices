@@ -7,7 +7,13 @@ namespace Naftan.VatInvoices.Domain
     /// </summary>
     public enum BuySaleType:short
     {
+        /// <summary>
+        /// покупка
+        /// </summary>
         [Description("покупка")] Buy = 1,
+        /// <summary>
+        /// продажа
+        /// </summary>
         [Description("продажа")] Sale = 2
     }
 }

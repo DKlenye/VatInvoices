@@ -1,10 +1,10 @@
-﻿using Naftan.VatInvoices.Domain;
+﻿using Naftan.VatInvoices.Dto;
 
 namespace Naftan.VatInvoices
 {
     public class StatusInfo
     {
-        public StatusInfo(VatInvoice invoice, string status, string message, string since)
+        public StatusInfo(VatInvoiceDto invoice, string status, string message, string since)
         {
             Invoice = invoice;
             Since = since;
@@ -12,7 +12,7 @@ namespace Naftan.VatInvoices
             Status = status;
         }
 
-        public VatInvoice Invoice { get; private set; }
+        public VatInvoiceDto Invoice { get; private set; }
         public string Status { get; private set; }
         public string Message { get; private set; }
         public string Since { get; private set; }

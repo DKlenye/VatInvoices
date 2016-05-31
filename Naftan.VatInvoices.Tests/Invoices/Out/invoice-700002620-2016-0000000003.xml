@@ -1,0 +1,108 @@
+<issuance xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" sender="300042199" xmlns="http://www.w3schools.com">
+  <general>
+    <number>300042199-2016-0000000015</number>
+    <dateIssuance>2016-05-24</dateIssuance>
+    <dateTransaction>2016-04-19</dateTransaction>
+    <documentType>ORIGINAL</documentType>
+  </general>
+  <provider>
+    <providerStatus>SELLER</providerStatus>
+    <dependentPerson>false</dependentPerson>
+    <residentsOfOffshore>false</residentsOfOffshore>
+    <specialDealGoods>false</specialDealGoods>
+    <bigCompany>false</bigCompany>
+    <countryCode>112</countryCode>
+    <unp>300042199</unp>
+    <name>ОАО "НАФТАН"</name>
+    <address>ОАО "Нафтан", Республика Беларусь, Витебская обл, г.Новополоцк</address>
+  </provider>
+  <recipient>
+    <recipientStatus>CUSTOMER</recipientStatus>
+    <dependentPerson>false</dependentPerson>
+    <residentsOfOffshore>false</residentsOfOffshore>
+    <specialDealGoods>false</specialDealGoods>
+    <bigCompany>false</bigCompany>
+    <countryCode>112</countryCode>
+    <unp>500036524</unp>
+    <name>ОАО "ГРОДНО АЗОТ"</name>
+    <address>ул. Космонавтов, 100, Гродно, Беларусь</address>
+  </recipient>
+  <senderReceiver>
+    <consignors>
+      <consignor>
+        <countryCode>112</countryCode>
+        <unp>300042199</unp>
+        <name>ОАО "НАФТАН"</name>
+        <address>ОАО "Нафтан", Республика Беларусь, Витебская обл, г.Новополоцк</address>
+      </consignor>
+    </consignors>
+    <consignees>
+      <consignee>
+        <countryCode>112</countryCode>
+        <unp>500036524</unp>
+        <name>ОАО "ГРОДНО АЗОТ"</name>
+        <address>ул. Космонавтов, 100, Гродно, Беларусь</address>
+      </consignee>
+    </consignees>
+  </senderReceiver>
+  <deliveryCondition>
+    <contract>
+      <number>049/1.02.317</number>
+      <date>2016-01-16</date>
+      <documents>
+        <document>
+          <docType>
+            <code>602</code>
+          </docType>
+          <date>2016-04-19</date>
+          <blankCode>401851</blankCode>
+          <seria>ПЖ</seria>
+          <number>374784</number>
+        </document>
+        <document>
+          <docType>
+            <code>602</code>
+          </docType>
+          <date>2016-04-19</date>
+          <blankCode>401851</blankCode>
+          <seria>ПЖ</seria>
+          <number>374798</number>
+        </document>
+      </documents>
+    </contract>
+  </deliveryCondition>
+  <roster totalCostVat="8015848159.000" totalExcise="0.000" totalVat="1335974693.000" totalCost="6679873466.000">
+    <rosterItem>
+      <number>1</number>
+      <name>Топливо дизельное ДТ-Л-К5, сорт C</name>
+      <code>2710194200</code>
+      <units>168</units>
+      <count>62.145000</count>
+      <price>7412100.000</price>
+      <cost>460624955.000</cost>
+      <summaExcise>0.000</summaExcise>
+      <vat>
+        <rate>20.00</rate>
+        <rateType>DECIMAL</rateType>
+        <summaVat>92124991.000</summaVat>
+      </vat>
+      <costVat>552749946.000</costVat>
+    </rosterItem>
+    <rosterItem>
+      <number>2</number>
+      <name>Топливо дизельное ДТ-Л-К5, сорт C</name>
+      <code>2710194200</code>
+      <units>168</units>
+      <count>839.067000</count>
+      <price>7412100.000</price>
+      <cost>6219248511.000</cost>
+      <summaExcise>0.000</summaExcise>
+      <vat>
+        <rate>20.00</rate>
+        <rateType>DECIMAL</rateType>
+        <summaVat>1243849702.000</summaVat>
+      </vat>
+      <costVat>7463098213.000</costVat>
+    </rosterItem>
+  </roster>
+</issuance>

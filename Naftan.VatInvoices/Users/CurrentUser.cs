@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Security.Principal;
+using Naftan.VatInvoices.Extensions;
 
 namespace Naftan.VatInvoices.Users
 {
@@ -35,18 +36,18 @@ namespace Naftan.VatInvoices.Users
             }
         }
 
-        public static IEnumerable<string> Roles
+        public static IEnumerable<UserRoles> Roles
         {
             get
             {
-                var userRoles = new List<string>();
+                var userRoles = new List<UserRoles>();
                 var principal = GetPrincipal();
 
                 Enum.GetNames(typeof (UserRoles)).ToList().ForEach(x =>
                 {
                     if (principal.IsInRole(x))
                     {
-                        userRoles.Add(x);
+                        userRoles.Add(x.ConvertToEnum<UserRoles>());
                     }
                 });
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Naftan.VatInvoices.Domain;
 using Naftan.VatInvoices.Dto;
+using Naftan.VatInvoices.Users;
 
 namespace Naftan.VatInvoices
 {
@@ -14,8 +15,15 @@ namespace Naftan.VatInvoices
         /// </summary>
         /// <param name="period">формат периода yyyymm</param>
         /// <returns></returns>
-        IEnumerable<VatInvoiceDto> LoadVatInvoices(int? period = null);
-        
+        IEnumerable<VatInvoiceDto> LoadVatInvoices(int period);
+
+        /// <summary>
+        /// Сохранить информацию по ЭСЧФ
+        /// </summary>
+        /// <param name="invoice"></param>
+        /// <returns></returns>
+        VatInvoiceDto SaveVatInvoice(VatInvoice invoice);
+
         /// <summary>
         /// Загрузить список документов по id ЭСЧФ
         /// </summary>
@@ -49,17 +57,35 @@ namespace Naftan.VatInvoices
         /// </summary>
         /// <param name="invoiceId"></param>
         IEnumerable<VatInvoiceDto> ApproveVatInvoice(params int[] invoiceId);
+
+        /// <summary>
+        /// Отмена подтверждения проверки информации от ответственного бухгалтера
+        /// </summary>
+        /// <param name="invoiceId"></param>
+        IEnumerable<VatInvoiceDto> CancelApproveVatInvoice(params int[] invoiceId);
         
         /// <summary>
         /// Подписать и отправить ЭСЧФ на портал налоговой
         /// </summary>
         /// <param name="invoiceId">Id (Ключ) ЭСЧФ</param>
-        IEnumerable<SignUpAndSendRezult> SignUpAndSend(params int[] invoiceId);
+        IEnumerable<SendRezult> SignAndSend(params int[] invoiceId);
 
         /// <summary>
         /// Проверить статус выставленных ЭСЧФ
         /// </summary>
         IEnumerable<VatInvoiceDto> CheckStatus();
+
+        /// <summary>
+        /// Получить входящие ЭСЧФ с портала 
+        /// </summary>
+        IEnumerable<VatInvoiceDto> ReceiveIncoming();
+
+
+        /// <summary>
+        /// Получить список ролей текущего пользователя
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<UserRoles> GetUserRoles();
 
     }
 }

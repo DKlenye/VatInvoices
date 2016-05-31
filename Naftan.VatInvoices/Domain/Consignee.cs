@@ -2,10 +2,13 @@
 
 namespace Naftan.VatInvoices.Domain
 {
-    public class Consignee
+    /// <summary>
+    /// Грузоотправитель
+    /// </summary>
+    public class Consignee : IVatInvoiceId
     {
         [DisplayName("Код")]
-        public int ConsigneeId { get; set; }
+        public int Id { get; set; }
 
         [DisplayName("Код ЭСЧФ")]
         public int InvoiceId { get; set; }

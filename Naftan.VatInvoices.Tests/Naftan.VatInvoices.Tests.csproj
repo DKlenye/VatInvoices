@@ -32,14 +32,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dapper, Version=1.40.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Dapper.1.42\lib\net40\Dapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DapperExtensions, Version=1.4.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DapperExtensions.1.4.4\lib\net40\DapperExtensions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.3.2.1\lib\net40\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,17 +52,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DatabaseTests\BaseTest.cs" />
-    <Compile Include="DatabaseTests\QueryObjectsTest.cs" />
-    <Compile Include="DatabaseTests\SetUpClass.cs" />
-    <Compile Include="EInvVatServiceTests\ActiveXTest.cs" />
+    <Compile Include="BaseTest.cs" />
+    <Compile Include="Converters\ConvertersTests.cs" />
+    <Compile Include="Database\BaseDatabaseTest.cs" />
+    <Compile Include="Database\IntegrationTests.cs" />
+    <Compile Include="Database\SetUpClass.cs" />
+    <Compile Include="EInvVatService\ActiveXTest.cs" />
+    <Compile Include="PortalTests\PortalServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueryObjects\CreateDatabase.cs" />
-    <Compile Include="QueryObjects\CreateTable.cs" />
-    <Compile Include="EInvVatServiceTests\SetUpClass.cs" />
-    <Compile Include="SerializationTests\SaveXmlTest.cs" />
+    <Compile Include="EInvVatService\SetUpClass.cs" />
+    <Compile Include="Serialization\SerializerTests.cs" />
     <Compile Include="Users\CurrentUserTest.cs" />
-    <Compile Include="VatInvoiceServiceTests\ReleaseServiceTests.cs" />
+    <Compile Include="VatInvoiceServiceTests\ReleaseServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -69,10 +75,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="InInvoices\invoice-100023423-2016-0000000001.xml" />
-    <Content Include="InInvoices\invoice-100023423-2016-0000000002.xml" />
-    <Content Include="Invoices\invoice -700002620-2016-0000000004.xml" />
-    <Content Include="Invoices\invoice-700002620-2016-0000000003.xml" />
+    <Content Include="Invoices\In\invoice-100023423-2016-0000000001.xml" />
+    <Content Include="Invoices\In\invoice-100023423-2016-0000000002.xml" />
+    <Content Include="Invoices\In\invoice-500036524-2016-0000021962.xml" />
+    <Content Include="Invoices\In\invoice-500036524-2016-0000022149.xml" />
+    <Content Include="Invoices\In\invoice-500036524-2016-0000022323.xml" />
+    <Content Include="Invoices\Out\invoice-700002620-2016-0000000003.xml" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="EInvVatService">
@@ -86,7 +94,7 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="OutInvoices\" />
+    <Folder Include="Invoices\Sign\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

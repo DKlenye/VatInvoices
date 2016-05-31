@@ -32,11 +32,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dapper">
+    <Reference Include="Dapper, Version=1.40.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.1.42\lib\net40\Dapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DapperExtensions, Version=1.4.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DapperExtensions.1.4.4\lib\net40\DapperExtensions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
@@ -46,90 +52,138 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\AbstractInsertCommand.cs" />
+    <Compile Include="Commands\AbstractSqlCommand.cs" />
+    <Compile Include="Commands\AbstractUpdateCommand.cs" />
+    <Compile Include="Commands\DDL\CreateTable\CreateConsignees.cs" />
+    <Compile Include="Commands\DDL\CreateTable\CreateConsignors.cs" />
+    <Compile Include="Commands\DDL\CreateTable\CreateDocuments.cs" />
+    <Compile Include="Commands\DDL\CreateTable\CreateRosterDescription.cs" />
+    <Compile Include="Commands\DDL\CreateTable\CreateRosterList.cs" />
+    <Compile Include="Commands\DDL\CreateTable\CreateVatInvoice.cs" />
+    <Compile Include="Commands\GenerateVatInvoiceNumber.cs" />
+    <Compile Include="Commands\InsertRoster.cs" />
+    <Compile Include="Commands\InsertVatInvoice.cs" />
+    <Compile Include="Commands\InsertVatInvoiceXml.cs" />
+    <Compile Include="Commands\UpdateVatInvoice.cs" />
+    <Compile Include="Commands\UpdateVatInvoiceXml.cs" />
+    <Compile Include="Converters\InvoiceAdditionalConverter.cs" />
+    <Compile Include="Converters\ConsigneeConverter.cs" />
+    <Compile Include="Converters\ConsignorConverter.cs" />
+    <Compile Include="Converters\DocumentConverter.cs" />
+    <Compile Include="Converters\IConverter.cs" />
+    <Compile Include="Converters\InvoiceAddNoReferenceConverter.cs" />
+    <Compile Include="Converters\InvoiceCancelledConverter.cs" />
+    <Compile Include="Converters\InvoiceOriginalConverter.cs" />
+    <Compile Include="Converters\ProviderConverter.cs" />
+    <Compile Include="Converters\RecipientConverter.cs" />
+    <Compile Include="Converters\RosterConverter.cs" />
+    <Compile Include="Domain\AccountList.cs" />
     <Compile Include="Domain\BuySaleType.cs" />
     <Compile Include="Domain\Consignee.cs" />
     <Compile Include="Domain\Consignor.cs" />
     <Compile Include="Domain\Document.cs" />
+    <Compile Include="Domain\DocumentType.cs" />
     <Compile Include="Domain\InvoiceStatus.cs" />
-    <Compile Include="Domain\InvoiceType.cs" />
-    <Compile Include="Domain\ProviderStatus.cs" />
-    <Compile Include="Domain\RecipientStatus.cs" />
-    <Compile Include="Domain\Replication.cs" />
+    <Compile Include="Domain\DatePeriod.cs" />
+    <Compile Include="Domain\IVatInvoiceId.cs" />
+    <Compile Include="Domain\Provider.cs" />
+    <Compile Include="Domain\Recipient.cs" />
     <Compile Include="Domain\ReplicationSource.cs" />
     <Compile Include="Domain\Roster.cs" />
-    <Compile Include="Domain\RosterDescription.cs" />
     <Compile Include="Domain\VatInvoice.cs" />
     <Compile Include="Domain\VatInvoiceNumber.cs" />
-    <Compile Include="Domain\VatRateType.cs" />
+    <Compile Include="Domain\VatInvoiceXml.cs" />
     <Compile Include="Dto\VatInvoiceDto.cs" />
-    <Compile Include="Extensions\DapperQueryObjectExtensions.cs" />
     <Compile Include="Extensions\StringApplyTemplateExtension.cs" />
     <Compile Include="Extensions\StringConvertToEnumExtension.cs" />
+    <Compile Include="Extensions\TypeConverterExtension.cs" />
+    <Compile Include="ICommand.cs" />
+    <Compile Include="IDatabase.cs" />
+    <Compile Include="Impl\Database.cs" />
     <Compile Include="Impl\PortalService.cs" />
     <Compile Include="Impl\VatInvoiceSerializer.cs" />
     <Compile Include="IPortalService.cs" />
+    <Compile Include="IQuery.cs" />
     <Compile Include="IVatInvoiceSerializer.cs" />
-    <Compile Include="SignUpAndSendInfo.cs" />
-    <Compile Include="SignUpAndSendRezult.cs" />
+    <Compile Include="LoadInfo.cs" />
+    <Compile Include="Mappers\ConsigneeMapper.cs" />
+    <Compile Include="Mappers\ConsignorMapper.cs" />
+    <Compile Include="Mappers\DocumentMapper.cs" />
+    <Compile Include="Mappers\DocumentTypeMapper.cs" />
+    <Compile Include="Mappers\RosterMapper.cs" />
+    <Compile Include="Mappers\VatInvoiceXmlMapper.cs" />
+    <Compile Include="Mnsati\Additional\issuance.cs" />
+    <Compile Include="Mnsati\Additional\general.cs" />
+    <Compile Include="Mnsati\AddNoReference\issuance.cs" />
+    <Compile Include="Mnsati\AddNoReference\general.cs" />
+    <Compile Include="Mnsati\Cancelled\issuance.cs" />
+    <Compile Include="Mnsati\Cancelled\general.cs" />
+    <Compile Include="Mnsati\consignee.cs" />
+    <Compile Include="Mnsati\consignor.cs" />
+    <Compile Include="Mnsati\contract.cs" />
+    <Compile Include="Mnsati\deliveryCondition.cs" />
+    <Compile Include="Mnsati\descriptionType.cs" />
+    <Compile Include="Mnsati\docType.cs" />
+    <Compile Include="Mnsati\document.cs" />
+    <Compile Include="Mnsati\Fixed\issuance.cs" />
+    <Compile Include="Mnsati\Fixed\general.cs" />
+    <Compile Include="Mnsati\forInvoiceType.cs" />
+    <Compile Include="Mnsati\invoiceDocType.cs" />
+    <Compile Include="Mnsati\Original\issuance.cs" />
+    <Compile Include="Mnsati\Original\general.cs" />
+    <Compile Include="Mnsati\rateType.cs" />
+    <Compile Include="Mnsati\provider.cs" />
+    <Compile Include="Mnsati\providerStatusType.cs" />
+    <Compile Include="Mnsati\recipient.cs" />
+    <Compile Include="Mnsati\recipientStatusType.cs" />
+    <Compile Include="Mnsati\rosterItem.cs" />
+    <Compile Include="Mnsati\rosterList.cs" />
+    <Compile Include="Mnsati\senderReceiver.cs" />
+    <Compile Include="Mnsati\taxesType.cs" />
+    <Compile Include="Mnsati\vat.cs" />
+    <Compile Include="Queries\AbstractSelectByInvoiceId.cs" />
+    <Compile Include="Queries\AbstractSqlQuery.cs" />
+    <Compile Include="Queries\SelectAccountListByPeriod.cs" />
+    <Compile Include="Queries\SelectConsigneesByInvoiceId.cs" />
+    <Compile Include="Queries\SelectConsignorsByInvoiceId.cs" />
+    <Compile Include="Queries\SelectDocumentsByInvoiceId.cs" />
+    <Compile Include="Queries\SelectRostersByInvoiceId.cs" />
+    <Compile Include="Queries\SelectVatInvoiceById.cs" />
+    <Compile Include="Queries\SelectVatInvoiceDtoAll.cs" />
+    <Compile Include="Queries\SelectVatInvoiceDtoByIds.cs" />
+    <Compile Include="Queries\SelectVatInvoiceDtoByPeriod.cs" />
+    <Compile Include="Queries\SelectVatInvoiceDtoForCheckStatus.cs" />
+    <Compile Include="Queries\SelectVatInvoiceXmlByInvoiceId.cs" />
+    <Compile Include="SendInInfo.cs" />
+    <Compile Include="SendOutInfo.cs" />
+    <Compile Include="SendRezult.cs" />
     <Compile Include="Impl\VatInvoiceService.cs" />
     <Compile Include="IVatInvoiceService.cs" />
-    <Compile Include="Mnsati\Additional\MNSATI_additional.cs">
-      <DependentUpon>MNSATI_additional.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="Mnsati\AddNoReference\MNSATI_add_no_reference.cs">
-      <DependentUpon>MNSATI_add_no_reference.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="Mnsati\Fixed\MNSATI_fixed.cs">
-      <DependentUpon>MNSATI_fixed.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="Mnsati\Original\MNSATI_original.cs">
-      <DependentUpon>MNSATI_original.xsd</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Queries\AbstractQuery.cs" />
-    <Compile Include="Queries\InsertVatInvoiceQuery.cs" />
-    <Compile Include="Queries\SelectVatInvoiceQuery.cs" />
-    <Compile Include="QueryObjects\InsertConsignee.cs" />
-    <Compile Include="QueryObjects\InsertDocument.cs" />
-    <Compile Include="QueryObjects\InsertRoster.cs" />
-    <Compile Include="QueryObjects\InsertVatInvoice.cs" />
-    <Compile Include="QueryObjects\InsertConsignor.cs" />
-    <Compile Include="QueryObjects\QueryObject.cs" />
-    <Compile Include="QueryObjects\SelectConsignee.cs" />
-    <Compile Include="QueryObjects\SelectConsignor.cs" />
-    <Compile Include="QueryObjects\SelectDocument.cs" />
-    <Compile Include="QueryObjects\SelectRoster.cs" />
-    <Compile Include="QueryObjects\SelectVatInvoice.cs" />
-    <Compile Include="QueryObjects\SelectVatInvoiceDto.cs" />
-    <Compile Include="QueryObjects\UpdateVatInvoice.cs" />
     <Compile Include="StatusInfo.cs" />
     <Compile Include="Users\CurrentUser.cs" />
     <Compile Include="Users\UserRoles.cs" />
+    <Compile Include="Validations\IValidation.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Mnsati\Additional\GenerateSchema.bat" />
-    <None Include="Mnsati\Additional\MNSATI_additional.xsd">
+    <None Include="Mnsati\xsd\GenerateSchema.bat" />
+    <None Include="Mnsati\xsd\MNSATI_additional.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Mnsati\AddNoReference\GenerateSchema.bat" />
-    <None Include="Mnsati\AddNoReference\MNSATI_add_no_reference.xsd">
+    <None Include="Mnsati\xsd\MNSATI_add_no_reference.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Mnsati\Fixed\GenerateSchema.bat" />
-    <None Include="Mnsati\Fixed\MNSATI_fixed.xsd">
+    <None Include="Mnsati\xsd\MNSATI_cancelled.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Mnsati\Original\GenerateSchema.bat" />
-    <None Include="Mnsati\Original\MNSATI_original.xsd">
+    <None Include="Mnsati\xsd\MNSATI_fixed.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Naftan.VatInvoices.nuspec">
+    <None Include="Mnsati\xsd\MNSATI_original.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Mnsati\Original\original_max1.xml" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="EInvVatService">
@@ -142,6 +196,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

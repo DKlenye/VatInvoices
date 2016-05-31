@@ -5,25 +5,13 @@ namespace Naftan.VatInvoices.Domain
 {
     public class VatInvoiceNumber
     {
-
         public VatInvoiceNumber()
         {
-            
         }
 
         public VatInvoiceNumber(string numberString)
         {
-            if (!CheckFormat(numberString))
-            {
-                throw  new FormatException(numberString+ " -  number string bad format");
-            }
-            var props = numberString.Split('-');
-
-            Unp = props[0];
-            Year = int.Parse(props[1]);
-            Number = int.Parse(props[2]);
-
-
+            NumberString = numberString;
         }
 
         private bool CheckFormat(string numberString)
@@ -48,6 +36,18 @@ namespace Naftan.VatInvoices.Domain
             get
             {
                 return String.Format("{0}-{1}-{2}",Unp,Year,Number.ToString("D10"));
+            }
+            set
+            {
+                if (!CheckFormat(value))
+                {
+                    throw new FormatException(value + " -  number string bad format");
+                }
+                var props = value.Split('-');
+
+                Unp = props[0];
+                Year = int.Parse(props[1]);
+                Number = int.Parse(props[2]);
             }
         }
     }
