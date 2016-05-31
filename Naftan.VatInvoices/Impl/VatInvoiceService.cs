@@ -56,9 +56,9 @@ namespace Naftan.VatInvoices.Impl
             _db = new Database(new SqlConnection(ConnectionString));
         }
 
-        public IEnumerable<VatInvoiceDto> LoadVatInvoices(int period)
+        public IEnumerable<VatInvoiceDto> LoadVatInvoices(int? period = null)
         {
-            var datePeriod = new DatePeriod(period);
+            var datePeriod = new DatePeriod(period.Value);
 
             Accounts = _db.Execute(new SelectAccountListByPeriod(datePeriod))
                 .ToDictionary(x => x.FullAccount+"00", x => x.LabelCostItem);

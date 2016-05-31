@@ -15,8 +15,10 @@ namespace Naftan.VatInvoices
         /// </summary>
         /// <param name="period">формат периода yyyymm</param>
         /// <returns></returns>
-        IEnumerable<VatInvoiceDto> LoadVatInvoices(int period);
+        IEnumerable<VatInvoiceDto> LoadVatInvoices(int? period = null);
 
+
+            
         /// <summary>
         /// Сохранить информацию по ЭСЧФ
         /// </summary>

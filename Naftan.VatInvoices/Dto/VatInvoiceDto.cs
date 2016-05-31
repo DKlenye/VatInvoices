@@ -10,6 +10,9 @@ namespace Naftan.VatInvoices.Dto
     /// </summary>
     public class VatInvoiceDto
     {
+        [DisplayName("")]
+        public int Check { get; set; }
+
         [DisplayName("Код")]
         public int InvoiceId { get; set; }
 
@@ -216,8 +219,8 @@ namespace Naftan.VatInvoices.Dto
         [DisplayName("Подтверждено бухгалтером")]
         public string ApproveUser { get; set; }
 
-        [DisplayName("Подтверждение вывоза ")]
-        public DateTime? ApproveDateExport { get; set; }
+       /* [DisplayName("Подтверждение вывоза ")]
+        public DateTime? ApproveDateExport { get; set; }*/
         
     }
 }

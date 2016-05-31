@@ -40,9 +40,12 @@ namespace Naftan.VatInvoices.Tests.VatInvoiceServiceTests
         [Test]
         public void SignAndSendTest()
         {
-            var rezult = service.SignAndSend(120);
+            var rezult = service.SignAndSend(133);
             Console.WriteLine(rezult.First().Message);
         }
+
+       
+
 
     }
 }
