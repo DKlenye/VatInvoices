@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using EInvVatService;
@@ -8,6 +9,7 @@ using Naftan.VatInvoices.Dto;
 using Naftan.VatInvoices.Extensions;
 using Naftan.VatInvoices.Queries;
 using Naftan.VatInvoices.Users;
+using Naftan.VatInvoices.Validations;
 
 namespace Naftan.VatInvoices.Impl
 {
@@ -40,49 +42,56 @@ namespace Naftan.VatInvoices.Impl
                     );
             }
         }
-
-        private Dictionary<string, string> Accounts;
-
+        
         private IDatabase _db;
+
+        private IValidation<VatInvoice>[] Validations;  
+
 
         public VatInvoiceService(IPortalService portal, IDatabase db)
         {
             _portal = portal;
             _db = db;
+
+            Validations = new IValidation<VatInvoice>[]
+            {
+                new VatZeroValidation(),
+                new OriginalVatInvoiceNumberValidation(_db)
+            };
+
+
         }
 
-        public VatInvoiceService()
-        {
-            _db = new Database(new SqlConnection(ConnectionString));
-        }
-
+        public VatInvoiceService(): this(null,new Database(new SqlConnection(ConnectionString)))
+        {}
+      
         public IEnumerable<VatInvoiceDto> LoadVatInvoices(int? period = null)
         {
-            var datePeriod = new DatePeriod(period.Value);
 
-            Accounts = _db.Execute(new SelectAccountListByPeriod(datePeriod))
-                .ToDictionary(x => x.FullAccount+"00", x => x.LabelCostItem);
+            ValidateVatInvoices();
 
-            var dto = _db.Execute(new SelectVatInvoiceDtoByPeriod(datePeriod)).ToList();
-            dto.ForEach(x =>
-            {
-                if (x.Account != null && Accounts.ContainsKey(x.Account))
-                {
-                    x.AccountName = Accounts[x.Account];
-                }
-                if (x.VatAccount != null && Accounts.ContainsKey(x.VatAccount))
-                {
-                    x.VatAccountName = Accounts[x.VatAccount];
-                }
-            });
+            IEnumerable<VatInvoiceDto> dto;
+            if (period == null)
+                dto = _db.Execute(new SelectVatInvoiceDtoAll());
+            else
+                dto = _db.Execute(new SelectVatInvoiceDtoByPeriod(new DatePeriod(period.Value)));
             _db.Commit();
             return dto;
+        }
 
+        public VatInvoice LoadVatInvoice(int InvoiceId)
+        {
+            var invoice = _db.Execute(new SelectVatInvoiceById(InvoiceId));
+            _db.Commit();
+            return invoice;
         }
 
         public VatInvoiceDto SaveVatInvoice(VatInvoice invoice)
         {
-            throw new System.NotImplementedException();
+            if (invoice.InvoiceId == 0) _db.Execute(new InsertVatInvoice(invoice));
+            else _db.Execute(new UpdateVatInvoice(invoice));
+            var dto = _db.Execute(new SelectVatInvoiceDtoByIds(invoice.InvoiceId));
+            return dto.FirstOrDefault();
         }
 
         public IEnumerable<Document> LoadDocuments(int invoiceId)
@@ -265,7 +274,6 @@ namespace Naftan.VatInvoices.Impl
             return rezult;
         }
 
-
         public IEnumerable<VatInvoiceDto> CheckStatus()
         {
             var invoices = _db.Execute(new SelectVatInvoiceDtoForCheckStatus());
@@ -277,14 +285,14 @@ namespace Naftan.VatInvoices.Impl
             checkInfo.ToList().ForEach(i =>
             {
                 var dto = i.Invoice;
-                if (i.Status != null)
+                if (!String.IsNullOrEmpty(i.Status) && i.Status != "NOT_FOUND")
                 {
                     var status = i.Status.ConvertToEnum<InvoiceStatus>();
 
                     if (dto.InvoiceStatus != status)
                     {
                         var invoice = _db.Execute(new SelectVatInvoiceById(dto.InvoiceId));
-                        invoice.SetStatus(status,"");
+                        invoice.SetStatus(status, "");
                         _db.Execute(new UpdateVatInvoice(invoice));
                         statusChanged.Add(dto);
                     }
@@ -298,12 +306,57 @@ namespace Naftan.VatInvoices.Impl
 
         public IEnumerable<VatInvoiceDto> ReceiveIncoming()
         {
-            throw new System.NotImplementedException();
+            var date = _db.Execute(new SelectMaxIncomeDate());
+            _db.Commit();
+            var info = portal.LoadIncomeVatInvoice(date);
+            var newInvoices = new List<VatInvoice>();
+
+            info.ToList().ForEach(i =>
+            {
+                if(!_db.Execute(new SelectVatInvoiceDtoByNumber(i.Number)).Any())
+                {
+
+                    var invoice = i.Invoice;
+                    invoice.IsIncome = true;
+                    invoice.BuySaleType = BuySaleType.Buy;
+                    invoice.AccountingDate = invoice.DateIssuance ?? invoice.DateTransaction;
+                    invoice.SetStatus(InvoiceStatus.COMPLETED);
+                    
+                    _db.Execute(new InsertVatInvoice(invoice));
+                    _db.Execute(new InsertVatInvoiceXml(
+                        new VatInvoiceXml
+                    {
+                        InvoiceId = i.Invoice.InvoiceId,
+                        Xml = i.Xml,
+                        SignXml = i.SignXml
+                    }));
+                    newInvoices.Add(i.Invoice);
+                }
+            });
+
+            var dto = _db.Execute(new SelectVatInvoiceDtoByIds(newInvoices.Select(x => x.InvoiceId).ToArray()));
+            _db.Commit();
+            return dto;
+            
         }
 
         public IEnumerable<UserRoles> GetUserRoles()
         {
             return CurrentUser.Roles;
         }
+
+        private void ValidateVatInvoices()
+        {
+            _db.Execute(new SelectVatInvoiceDtoForValidate())
+                .ToList().ForEach(x =>
+                {
+                    var invoice = _db.Execute(new SelectVatInvoiceById(x.InvoiceId));
+                    invoice.Validate(Validations);
+                    _db.Execute(new UpdateVatInvoice(invoice));
+                });
+
+            _db.Commit();
+        }
+
     }
 }

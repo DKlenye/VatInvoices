@@ -1,13 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Data;
-using Dapper;
-using Naftan.VatInvoices.Dto;
+﻿using Naftan.VatInvoices.Dto;
 
 namespace Naftan.VatInvoices.Queries
 {
-    public class SelectVatInvoiceDtoAll:IQuery<IEnumerable<VatInvoiceDto>>
+    public class SelectVatInvoiceDtoAll : AbstractSqlQuery<VatInvoiceDto>
     {
-        protected virtual string Sql
+        protected override string Sql
         {
             get
             {
@@ -74,16 +71,11 @@ namespace Naftan.VatInvoices.Queries
                     RosterTotalCost,
                     ApproveDate,
                     ApproveUser,
-                    ApproveDateExport
+                    ApproveDateExport,
+                    IsValidate
                 FROM VatInvoice ";
             }
         }
-
-        public virtual IEnumerable<VatInvoiceDto> Execute(IDbConnection db, IDbTransaction tx)
-        {
-            return db.Query<VatInvoiceDto>(Sql, transaction: tx);
-        }
-
 
     }
 }

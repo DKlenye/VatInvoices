@@ -1,9 +1,11 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using Dapper;
+using Naftan.VatInvoices.Domain;
 
-namespace Naftan.VatInvoices.Commands
+namespace Naftan.VatInvoices.Queries
 {
-    public class GenerateVatInvoiceNumber : ICommand
+    public class GenerateVatInvoiceNumber : IQuery<VatInvoiceNumber>
     {
         public GenerateVatInvoiceNumber(int year)
         {
@@ -12,9 +14,9 @@ namespace Naftan.VatInvoices.Commands
 
         public int Year { get; private set; }
         public string NumberString { get; set; }
-        public int Number { get; private set; }
+        public Int64 Number { get; private set; }
 
-        public void Execute(IDbConnection db, IDbTransaction tx)
+        public VatInvoiceNumber Execute(IDbConnection db, IDbTransaction tx)
         {
             db.Execute(@"
             EXEC spu_GenerateVatInvoiceNumber
@@ -24,7 +26,10 @@ namespace Naftan.VatInvoices.Commands
             ",
                 new DynamicParameters(this)
                     .Output(this, x => x.Number)
-                    .Output(this, x => x.NumberString));
+                    .Output(this, x => x.NumberString)
+                    ,tx);
+
+            return new VatInvoiceNumber(NumberString);
         }
     }
 }

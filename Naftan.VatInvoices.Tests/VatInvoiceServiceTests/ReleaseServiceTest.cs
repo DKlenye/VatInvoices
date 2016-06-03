@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Naftan.VatInvoices.Impl;
 using NUnit.Framework;
 
 namespace Naftan.VatInvoices.Tests.VatInvoiceServiceTests
@@ -7,7 +8,7 @@ namespace Naftan.VatInvoices.Tests.VatInvoiceServiceTests
     public class ReleaseServiceTest
     {
 
-        private IVatInvoiceService service = new Impl.VatInvoiceService();
+        private readonly IVatInvoiceService service = new VatInvoiceService();
 
         [Test]
         public void LoadVatInvoicesDtoTest()
@@ -40,12 +41,30 @@ namespace Naftan.VatInvoices.Tests.VatInvoiceServiceTests
         [Test]
         public void SignAndSendTest()
         {
-            var rezult = service.SignAndSend(133);
+            var rezult = service.SignAndSend(120);
             Console.WriteLine(rezult.First().Message);
         }
 
-       
+        [Test]
+        public void Sign2AndSendTest()
+        {
+            var rezult = service.SignAndSend(727);
+            Console.WriteLine(rezult.First().Message);
+        }
 
+
+        [Test]
+        public void CheckStatusTest()
+        {
+            service.CheckStatus();
+        }
+
+        [Test]
+        public void ReceiveIncome()
+        {
+            service.ReceiveIncoming();
+        }
+        
 
     }
 }

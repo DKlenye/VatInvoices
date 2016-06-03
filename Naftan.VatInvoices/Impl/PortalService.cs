@@ -82,12 +82,13 @@ namespace Naftan.VatInvoices.Impl
                             else
                             {
 
+
                                 i = new SendOutInfo(
                                     x,
                                     false,
                                     ticket.Message,
                                     Encoding.UTF8.GetString(Convert.FromBase64String(eDoc.Document.GetData[1])),
-                                    eDoc.GetData[0]
+                                    Encoding.UTF8.GetString(Convert.FromBase64String(eDoc.GetData[1]))
                                     );
                             }
                         }
@@ -108,16 +109,18 @@ namespace Naftan.VatInvoices.Impl
                 {
                     SendInInfo i;
                     var eDoc = connector.CreateEDoc;
-                    if (eDoc.SetData[x.SignXml, 1] != 0)
+                    if (eDoc.SetData[Convert.ToBase64String(Encoding.UTF8.GetBytes(x.SignXml)), 1] != 0)
                         i = new SendInInfo(x, true, ExceptionMessage("Ошибка загрузки информации "));
                     else
                     {
-                        if (eDoc.GetSignCount == 0)
+                        
+                        var signCount = eDoc.GetSignCount;
+                        if (signCount == 0)
                             i = new SendInInfo(x, true, ExceptionMessage("Документ не содержит ЭЦП "));
                         else {
-                            if (eDoc.VerifySign[1, 0] != 0)
-                                i = new SendInInfo(x, true, ExceptionMessage("Ошибка проверки подписи "));
-                            else
+                           // if (eDoc.VerifySign[1, 0] != 0)
+                           //     i = new SendInInfo(x, true, ExceptionMessage("Ошибка проверки подписи "));
+                           // else
                             {
                                 if (eDoc.Sign[0] != 0) i = new SendInInfo(x, true, ExceptionMessage("Ошибка подписи"));
                                 else
@@ -134,7 +137,8 @@ namespace Naftan.VatInvoices.Impl
                                         }
                                         else
                                         {
-                                            x.Sign2Xml = eDoc.GetData[1];
+                                            x.Sign2Xml =
+                                                Encoding.UTF8.GetString(Convert.FromBase64String(eDoc.GetData[1]));
 
                                             i = new SendInInfo(
                                                 x,
@@ -147,6 +151,9 @@ namespace Naftan.VatInvoices.Impl
                             }
                         }
                     }
+
+                    info.Add(i);
+
                 });
             Disconnect();
             return info;
@@ -175,22 +182,32 @@ namespace Naftan.VatInvoices.Impl
             var list = connector.GetList[date.ToString("s")];
             if (list != null)
             {
-                for (var i = list.Count; i != 0; i++)
-                {
-                    var number = list.GetItemAttribute[i, "document/number"];
-                    var eDoc = connector.GetEDoc[number];
-                    var signXml = eDoc.GetData[1];
-                    var xml = eDoc.Document.GetData[1];
+                var listCount = list.Count;
 
-                    info.Add(new LoadInfo(number,xml,signXml));
+                for (var i = 0; i < listCount; i++)
+                {
+                    var number = list.GetItemAttribute[i, @"document/number"];
+                    var eDoc = connector.GetEDoc[number];
+                    if (eDoc != null)
+                    {
+                        var verifySign = eDoc.VerifySign[0, 0];
+                        if (verifySign == 0)
+                        {
+                            var signXml = Encoding.UTF8.GetString(Convert.FromBase64String(eDoc.GetData[1]));
+                            var xml = Encoding.UTF8.GetString(Convert.FromBase64String(eDoc.Document.GetData[1]));
+                            var invoice = serializer.Deserialize(xml);
+
+                            info.Add(new LoadInfo(invoice, number, xml, signXml));
+                        }
+                    }
                 }
             }
             else
             {
-                ThrowException("Ошибка получения списка ЭСЧФ ");    
+                ThrowException("Ошибка получения списка ЭСЧФ ");
             }
             Disconnect();
-            
+
             return info;
         }
     }

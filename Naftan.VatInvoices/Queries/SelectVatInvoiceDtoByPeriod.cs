@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using Dapper;
 using Naftan.VatInvoices.Domain;
-using Naftan.VatInvoices.Dto;
 
 namespace Naftan.VatInvoices.Queries
 {
@@ -23,9 +19,5 @@ namespace Naftan.VatInvoices.Queries
             get { return base.Sql + " WHERE AccountingDate between @Start and @End "; }
         }
 
-        public override IEnumerable<VatInvoiceDto> Execute(IDbConnection db, IDbTransaction tx)
-        {
-            return db.Query<VatInvoiceDto>(Sql, new DynamicParameters(this), transaction: tx);
-        }
     }
 }

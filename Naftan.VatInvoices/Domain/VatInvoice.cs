@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Naftan.VatInvoices.Extensions;
 using Naftan.VatInvoices.Mnsati;
 using Naftan.VatInvoices.Validations;
 
@@ -81,7 +82,7 @@ namespace Naftan.VatInvoices.Domain
         public string ContractNumber { get; set; }
 
         [DisplayName("Дата договора")]
-        public DateTime ContractDate { get; set; }
+        public DateTime? ContractDate { get; set; }
 
         [DisplayName("Доп. сведения")]
         public string ContractDescription { get; set; }
@@ -106,6 +107,9 @@ namespace Naftan.VatInvoices.Domain
         [DisplayName("Подтверждено бухгалтером")]
         public string ApproveUser { get; private set; }
 
+        [DisplayName("Пройден форматно-логический контроль")]
+        public bool IsValidate { get; private set; }
+
         [DisplayName("Подтверждение вывоза ")]
         public DateTime? ApproveDateExport { get; private set; }
 
@@ -121,7 +125,7 @@ namespace Naftan.VatInvoices.Domain
         [DisplayName("Продукты, товары, услуги")]
         public IEnumerable<Roster> RosterList { get; set; }
 
-
+        
         /// <summary>
         /// Подтверждение счёта фактуры для передачи на портал МНС
         /// </summary>
@@ -158,7 +162,7 @@ namespace Naftan.VatInvoices.Domain
             return ApproveDate != null;
         }
 
-        public void SetStatus(InvoiceStatus status, string message)
+        public void SetStatus(InvoiceStatus status, string message = "")
         {
             Status = status;
             StatusMessage = message;
@@ -166,9 +170,22 @@ namespace Naftan.VatInvoices.Domain
 
         public void Validate(params IValidation<VatInvoice>[] validations)
         {
-            validations.ToList().ForEach(v => v.IsValid(this));
+            var enableValidateStatus = new[]
+            {
+                InvoiceStatus.IN_PROGRESS,
+                InvoiceStatus.IN_PROGRESS_ERROR
+            };
+            
+            if (enableValidateStatus.Contains(Status))
+            {
+                var errors = new List<string>();
+                validations.ToList().ForEach(v => errors.AddRange(v.IsValid(this)));
+
+                if (!IsValidate) IsValidate = true;
+
+                if (errors.Any()) SetStatus(InvoiceStatus.IN_PROGRESS_ERROR,String.Join(",",errors));
+                else SetStatus(InvoiceStatus.IN_PROGRESS);
+            }
         }
-
-
     }
 }

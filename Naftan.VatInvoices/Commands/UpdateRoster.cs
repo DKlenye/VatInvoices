@@ -6,9 +6,10 @@ using Naftan.VatInvoices.Domain;
 
 namespace Naftan.VatInvoices.Commands
 {
-    public class InsertRoster:ICommand
+    public class UpdateRoster:ICommand
     {
-        public InsertRoster(Roster roster)
+
+        public UpdateRoster(Roster roster)
         {
             Roster = roster;
         }
@@ -17,18 +18,21 @@ namespace Naftan.VatInvoices.Commands
 
         public void Execute(IDbConnection db, IDbTransaction tx)
         {
-            db.Insert(Roster, tx);
+            db.Update(Roster, tx);
+
+            db.Execute(@"
+                DELETE FROM RosterDescription WHERE RosterId = @Id
+                ", new { Roster.Id }, tx);
 
             if (Roster.Description != null)
             {
-
                 Roster.Description.ToList().ForEach(d => db.Execute(@"
                 INSERT INTO RosterDescription
                 VALUES
                 (
 	               @Id,
 	               @DescriptionTypeId
-                )", new {Roster.Id, DescriptionTypeId = d}, tx));
+                )", new { Roster.Id, DescriptionTypeId = d }, tx));
             }
         }
     }

@@ -24,9 +24,10 @@ namespace Naftan.VatInvoices.Queries
                        [Year],
                        Number,
 
+                        ProviderStatusId as ProviderStatus,
                         ProviderUnp, 
                         ProviderCounteragentId,
-                        ProviderStatusId as ProviderStatus,                    
+                                           
                         ProviderDependentPerson,
                         ProviderResidentsOfOffshore,                    
                         ProviderSpecialDealGoods, 
@@ -45,9 +46,9 @@ namespace Naftan.VatInvoices.Queries
                         ProviderTaxeNumber,
                         ProviderTaxeDate, 
 
+                        RecipientStatusId as RecipientStatus,
                         RecipientUnp,
                         RecipientCounteragentId,                 
-                        RecipientStatusId as RecipientStatus, 
                         RecipientDependentPerson, 
                         RecipientResidentsOfOffshore,                  
                         RecipientSpecialDealGoods,
@@ -88,7 +89,8 @@ namespace Naftan.VatInvoices.Queries
                         RosterTotalCost,             
                         ApproveDate, 
                         ApproveUser,
-                        ApproveDateExport
+                        ApproveDateExport,
+                        IsValidate
                   FROM VatInvoice where InvoiceId = @Id",
                        (number, provider, recipient, invoice) =>
                        {
@@ -96,7 +98,7 @@ namespace Naftan.VatInvoices.Queries
                            invoice.Provider = provider;
                            invoice.Recipient = recipient;
                            return invoice;
-                       }, new{Id}, tx, splitOn: "ProviderUnp, RecipientUnp, InvoiceId").Single();
+                       }, new{Id}, tx, splitOn: "ProviderStatus, RecipientStatus, InvoiceId").Single();
 
             i.Documents = new SelectDocumentsByInvoiceId(Id).Execute(db, tx);
             i.Consignees = new SelectConsigneesByInvoiceId(Id).Execute(db, tx);

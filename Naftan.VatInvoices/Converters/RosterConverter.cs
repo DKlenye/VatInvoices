@@ -20,7 +20,7 @@ namespace Naftan.VatInvoices.Converters
                 Price = obj.price,
                 SummaExcise = obj.summaExcise,
                 SummaVat = obj.vat.summaVat,
-                Units = int.Parse(obj.units),
+                Units = String.IsNullOrEmpty(obj.units)?(int?)null:int.Parse(obj.units),
                 VatRate = obj.vat.rate,
                 VatRateType = obj.vat.rateType,
                 Description = obj.descriptions,

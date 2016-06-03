@@ -7,6 +7,7 @@ namespace Naftan.VatInvoices.Domain
     /// </summary>
     public enum InvoiceStatus
     {
+
         /// <summary>
         /// В разработке
         /// </summary>

@@ -61,10 +61,11 @@
     <Compile Include="Commands\DDL\CreateTable\CreateRosterDescription.cs" />
     <Compile Include="Commands\DDL\CreateTable\CreateRosterList.cs" />
     <Compile Include="Commands\DDL\CreateTable\CreateVatInvoice.cs" />
-    <Compile Include="Commands\GenerateVatInvoiceNumber.cs" />
+    <Compile Include="Commands\DeleteRoster.cs" />
     <Compile Include="Commands\InsertRoster.cs" />
     <Compile Include="Commands\InsertVatInvoice.cs" />
     <Compile Include="Commands\InsertVatInvoiceXml.cs" />
+    <Compile Include="Commands\UpdateRoster.cs" />
     <Compile Include="Commands\UpdateVatInvoice.cs" />
     <Compile Include="Commands\UpdateVatInvoiceXml.cs" />
     <Compile Include="Converters\InvoiceAdditionalConverter.cs" />
@@ -100,8 +101,10 @@
     <Compile Include="Extensions\TypeConverterExtension.cs" />
     <Compile Include="ICommand.cs" />
     <Compile Include="IDatabase.cs" />
+    <Compile Include="IEntity.cs" />
     <Compile Include="Impl\Database.cs" />
     <Compile Include="Impl\PortalService.cs" />
+    <Compile Include="Impl\MockPortalService.cs" />
     <Compile Include="Impl\VatInvoiceSerializer.cs" />
     <Compile Include="IPortalService.cs" />
     <Compile Include="IQuery.cs" />
@@ -142,17 +145,22 @@
     <Compile Include="Mnsati\senderReceiver.cs" />
     <Compile Include="Mnsati\taxesType.cs" />
     <Compile Include="Mnsati\vat.cs" />
+    <Compile Include="Impl\MockVatInvoiceService.cs" />
     <Compile Include="Queries\AbstractSelectByInvoiceId.cs" />
     <Compile Include="Queries\AbstractSqlQuery.cs" />
+    <Compile Include="Queries\GenerateVatInvoiceNumber.cs" />
     <Compile Include="Queries\SelectAccountListByPeriod.cs" />
     <Compile Include="Queries\SelectConsigneesByInvoiceId.cs" />
     <Compile Include="Queries\SelectConsignorsByInvoiceId.cs" />
     <Compile Include="Queries\SelectDocumentsByInvoiceId.cs" />
+    <Compile Include="Queries\SelectMaxIncomeDate.cs" />
     <Compile Include="Queries\SelectRostersByInvoiceId.cs" />
     <Compile Include="Queries\SelectVatInvoiceById.cs" />
     <Compile Include="Queries\SelectVatInvoiceDtoAll.cs" />
     <Compile Include="Queries\SelectVatInvoiceDtoByIds.cs" />
+    <Compile Include="Queries\SelectVatInvoiceDtoByNumber.cs" />
     <Compile Include="Queries\SelectVatInvoiceDtoByPeriod.cs" />
+    <Compile Include="Queries\SelectVatInvoiceDtoForValidate.cs" />
     <Compile Include="Queries\SelectVatInvoiceDtoForCheckStatus.cs" />
     <Compile Include="Queries\SelectVatInvoiceXmlByInvoiceId.cs" />
     <Compile Include="SendInInfo.cs" />
@@ -165,6 +173,8 @@
     <Compile Include="Users\CurrentUser.cs" />
     <Compile Include="Users\UserRoles.cs" />
     <Compile Include="Validations\IValidation.cs" />
+    <Compile Include="Validations\OriginalVatInvoiceNumberValidation.cs" />
+    <Compile Include="Validations\VatZeroValidation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mnsati\xsd\GenerateSchema.bat" />
@@ -196,7 +206,6 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

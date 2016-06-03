@@ -29,7 +29,7 @@ namespace Naftan.VatInvoices.Domain
 
         public string Unp { get; private set; }
         public int Year { get; private set; }
-        public int Number { get; private set; }
+        public Int64 Number { get; private set; }
 
         public string NumberString
         {
@@ -47,7 +47,7 @@ namespace Naftan.VatInvoices.Domain
 
                 Unp = props[0];
                 Year = int.Parse(props[1]);
-                Number = int.Parse(props[2]);
+                Number = Int64.Parse(props[2]);
             }
         }
     }

@@ -11,20 +11,25 @@ namespace Naftan.VatInvoices.Converters
     {
         public VatInvoice To(issuance obj)
         {
+
+            var consignees = obj.senderReceiver.consignees;
+            var consignors = obj.senderReceiver.consignors;
+            var documents = obj.deliveryCondition.contract.documents;
+
             return new VatInvoice
             {
                 Sender = obj.sender,
                 VatNumber = new VatInvoiceNumber(obj.general.number),
-                DateIssuance = obj.general.dateIssuanceSpecified?obj.general.dateIssuance:(DateTime?)null,
+                DateIssuance = obj.general.dateIssuanceSpecified ? obj.general.dateIssuance : (DateTime?) null,
                 DateTransaction = obj.general.dateTransaction,
                 InvoiceType = obj.general.documentType,
                 ContractNumber = obj.deliveryCondition.contract.number,
                 ContractDate = obj.deliveryCondition.contract.date,
                 ContractDescription = obj.deliveryCondition.description,
-                Consignees = obj.senderReceiver.consignees.Select(x => x.ConvertTo<Consignee>()),
-                Consignors = obj.senderReceiver.consignors.Select(x => x.ConvertTo<Consignor>()),
-                Documents = obj.deliveryCondition.contract.documents.Select(x=>x.ConvertTo<Document>()),
-                RosterList = obj.roster.rosterItem.Select(x=>x.ConvertTo<Roster>()),
+                Consignees = consignees == null ? null : consignees.Select(x => x.ConvertTo<Consignee>()),
+                Consignors = consignors == null ? null : consignors.Select(x => x.ConvertTo<Consignor>()),
+                Documents = documents == null? null:documents.Select(x => x.ConvertTo<Document>()),
+                RosterList = obj.roster.rosterItem.Select(x => x.ConvertTo<Roster>()),
                 RosterTotalCost = obj.roster.totalCost,
                 RosterTotalCostVat = obj.roster.totalCostVat,
                 RosterTotalExcise = obj.roster.totalExcise,
@@ -32,8 +37,6 @@ namespace Naftan.VatInvoices.Converters
 
                 Provider = obj.provider.ConvertTo<Provider>(),
                 Recipient = obj.recipient.ConvertTo<Recipient>()
-                
-
             };
 
         }
@@ -60,7 +63,7 @@ namespace Naftan.VatInvoices.Converters
                 {
                     contract = new contract
                     {
-                        date = obj.ContractDate,
+                        date = obj.ContractDate.Value,
                         number = obj.ContractNumber,
                         documents = obj.Documents.Select(x=>x.ConvertTo<document>()).ToArray()
                     },

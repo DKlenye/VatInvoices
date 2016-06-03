@@ -28,7 +28,7 @@ namespace Naftan.VatInvoices.Domain
         public string CodeOced { get; set; }
 
         [DisplayName("Ед. изм.")]
-        public int Units { get; set; }
+        public int? Units { get; set; }
 
         [DisplayName("Кол-во (объём)")]
         public decimal? Count { get; set; }

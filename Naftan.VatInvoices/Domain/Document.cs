@@ -19,7 +19,7 @@ namespace Naftan.VatInvoices.Domain
         public int InvoiceId { get; set; }
 
         [DisplayName("Код типа документа")]
-        public int DocTypeCode { get; set; }
+        public int? DocTypeCode { get; set; }
 
         [DisplayName("Код бланка")]
         public string BlancCode { get; set; }
@@ -31,6 +31,6 @@ namespace Naftan.VatInvoices.Domain
         public string Seria { get; set; }
 
         [DisplayName("Дата")]
-        public DateTime Date { get; set; }
+        public DateTime? Date { get; set; }
     }
 }

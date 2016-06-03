@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Data;
-using Dapper;
-using Naftan.VatInvoices.Domain;
-using Naftan.VatInvoices.Dto;
+﻿using Naftan.VatInvoices.Domain;
 
 namespace Naftan.VatInvoices.Queries
 {
@@ -12,6 +8,8 @@ namespace Naftan.VatInvoices.Queries
         {
             Statuses = new []
             {
+                InvoiceStatus.IN_PROGRESS, 
+                InvoiceStatus.IN_PROGRESS_ERROR,
                 InvoiceStatus.COMPLETED,
                 InvoiceStatus.CANCELLED,
             };
@@ -24,9 +22,5 @@ namespace Naftan.VatInvoices.Queries
             get { return base.Sql + " WHERE  StatusId in @Statuses and IsIncome = 0"; }
         }
 
-        public override IEnumerable<VatInvoiceDto> Execute(IDbConnection db, IDbTransaction tx)
-        {
-            return db.Query<VatInvoiceDto>(Sql,new DynamicParameters(this), transaction: tx);
-        }
     }
 }

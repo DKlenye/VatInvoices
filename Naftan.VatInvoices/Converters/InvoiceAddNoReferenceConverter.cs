@@ -57,7 +57,7 @@ namespace Naftan.VatInvoices.Converters
                 {
                     contract = new contract
                     {
-                        date = obj.ContractDate,
+                        date = obj.ContractDate.Value,
                         number = obj.ContractNumber,
                         documents = obj.Documents.Select(x => x.ConvertTo<document>()).ToArray()
                     },

@@ -11,14 +11,19 @@ namespace Naftan.VatInvoices
     public interface IVatInvoiceService
     {
         /// <summary>
-        /// 
+        /// Загрузить информацию по ЭСЧФ
         /// </summary>
         /// <param name="period">формат периода yyyymm</param>
         /// <returns></returns>
         IEnumerable<VatInvoiceDto> LoadVatInvoices(int? period = null);
 
+        /// <summary>
+        /// Загрузить ЭСЧФ по Id
+        /// </summary>
+        /// <param name="InvoiceId"></param>
+        /// <returns></returns>
+        VatInvoice LoadVatInvoice(int InvoiceId);
 
-            
         /// <summary>
         /// Сохранить информацию по ЭСЧФ
         /// </summary>

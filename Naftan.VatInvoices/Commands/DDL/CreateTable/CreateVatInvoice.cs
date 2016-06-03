@@ -72,7 +72,7 @@ CREATE TABLE [dbo].[VatInvoice](
 	[RosterTotalCost] [decimal](18, 3) NULL,
 	[ApproveDate] [datetime] NULL,
 	[ApproveUser] [nvarchar](100) NULL,
-    [ApproveDateExport] [date] NULL
+    [IsValidate] [bit] NULL
  CONSTRAINT [PK_VatInvoice] PRIMARY KEY CLUSTERED 
 (
 	[InvoiceId] ASC

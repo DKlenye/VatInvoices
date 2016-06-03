@@ -11,7 +11,7 @@ namespace Naftan.VatInvoices.Dto
     public class VatInvoiceDto
     {
         [DisplayName("")]
-        public int Check { get; set; }
+        public bool Check { get; set; }
 
         [DisplayName("Код")]
         public int InvoiceId { get; set; }
@@ -31,14 +31,8 @@ namespace Naftan.VatInvoices.Dto
         [DisplayName("Счёт НДС")]
         public string VatAccount { get; set; }
 
-        [DisplayName("Наименование счёта НДС")]
-        public string VatAccountName { get; set; }
-
         [DisplayName("Бухгалтерский счёт")]
         public string Account { get; set; }
-
-        [DisplayName("Наименование счёта")]
-        public string AccountName { get; set; }
 
         [DisplayName("Статус ЭСЧФ")]
         public InvoiceStatus InvoiceStatus { get; set; }
@@ -219,8 +213,8 @@ namespace Naftan.VatInvoices.Dto
         [DisplayName("Подтверждено бухгалтером")]
         public string ApproveUser { get; set; }
 
-       /* [DisplayName("Подтверждение вывоза ")]
-        public DateTime? ApproveDateExport { get; set; }*/
+        [DisplayName("Пройден форматно-логический контроль")]
+        public bool IsValidate { get; set; }
         
     }
 }

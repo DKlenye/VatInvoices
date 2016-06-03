@@ -19,11 +19,11 @@ namespace Naftan.VatInvoices.Commands
         {
 
             var param = new DynamicParameters(Invoice)
-             .Output(Invoice, x => x.InvoiceId);
+                .Output(Invoice, x => x.InvoiceId);
             param.AddDynamicParams(Invoice.VatNumber);
             param.AddDynamicParams(Invoice.Provider);
             param.AddDynamicParams(Invoice.Recipient);
-               
+
             db.Execute(@"
                 INSERT INTO VatInvoice
             (
@@ -91,7 +91,8 @@ namespace Naftan.VatInvoices.Commands
 	            RosterTotalCost,
 	            ApproveDate,
                 ApproveUser,
-                ApproveDateExport
+                ApproveDateExport,
+                IsValidate
             )
             VALUES
             (
@@ -159,34 +160,38 @@ namespace Naftan.VatInvoices.Commands
 	            @RosterTotalCost,
                 @ApproveDate,
                 @ApproveUser,
-                @ApproveDateExport
+                @ApproveDateExport,
+                @IsValidate
             );
             SELECT @InvoiceId = SCOPE_IDENTITY();
 
-        ", param,tx);
-            
-            Invoice.Documents.ToList().ForEach(d =>
-            {
-                d.InvoiceId = Invoice.InvoiceId;
-                db.Insert(d, tx);
-            });
-            
-            Invoice.Consignees.ToList().ForEach(c =>
-            {
-                c.InvoiceId = Invoice.InvoiceId;
-                db.Insert(c, tx);
-            });
+        ", param, tx);
 
-            Invoice.Consignors.ToList().ForEach(c =>
-            {
-                c.InvoiceId = Invoice.InvoiceId;
-                db.Insert(c, tx);
-            });
+            if (Invoice.Documents != null)
+                Invoice.Documents.ToList().ForEach(d =>
+                {
+                    d.InvoiceId = Invoice.InvoiceId;
+                    db.Insert(d, tx);
+                });
+
+            if (Invoice.Consignees != null)
+                Invoice.Consignees.ToList().ForEach(c =>
+                {
+                    c.InvoiceId = Invoice.InvoiceId;
+                    db.Insert(c, tx);
+                });
+
+            if (Invoice.Consignors != null)
+                Invoice.Consignors.ToList().ForEach(c =>
+                {
+                    c.InvoiceId = Invoice.InvoiceId;
+                    db.Insert(c, tx);
+                });
 
             Invoice.RosterList.ToList().ForEach(r =>
             {
                 r.InvoiceId = Invoice.InvoiceId;
-                new InsertRoster(r).Execute(db,tx);
+                new InsertRoster(r).Execute(db, tx);
             });
         }
     }

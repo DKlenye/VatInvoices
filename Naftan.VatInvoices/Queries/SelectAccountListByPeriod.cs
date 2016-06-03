@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Data;
-using Dapper;
-using Naftan.VatInvoices.Domain;
+﻿using Naftan.VatInvoices.Domain;
 
 namespace Naftan.VatInvoices.Queries
 {
-    public class SelectAccountListByPeriod:IQuery<IEnumerable<AccountList>>
+    public class SelectAccountListByPeriod : AbstractSqlQuery<AccountList>
     {
         public SelectAccountListByPeriod(DatePeriod period)
         {
@@ -16,11 +13,10 @@ namespace Naftan.VatInvoices.Queries
         public int Year { get; private set; }
         public int Month { get; private set; }
 
-        public IEnumerable<AccountList> Execute(IDbConnection db, IDbTransaction tx)
+        protected override string Sql
         {
-            return db.Query<AccountList>(@"
-                exec spu_Accounts_List @Month,@Year,'90,91,58,18,60'
-            ", new DynamicParameters(this),tx);
+            get { return "exec spu_Accounts_List @Month,@Year,'90,91,58,18,60'"; }
         }
+
     }
 }

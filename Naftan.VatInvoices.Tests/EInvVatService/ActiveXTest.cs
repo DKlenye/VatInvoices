@@ -77,6 +77,19 @@ namespace Naftan.VatInvoices.Tests.EInvVatService
             if (eDoc.Sign[0] != 0) ThrowException("Ошибка подписи");
             if (connector.SendEDoc[eDoc] != 0) ThrowException("Ошибка отправки");
         }
+
+        [Test]
+        public void GetListTest()
+        {
+            var date = new DateTime(2016, 04, 02);
+
+            if (connector.Connect[portalUrl] != 0) ThrowException("Ошибка подключения");
+            var list = connector.GetList[date.ToString("s")];
+            if (list == null) ThrowException("Ошибка получения списка ЭСЧФ");
+            var listCount = list.Count;
+            Console.Write("{0}, {1}",list.ToDate,listCount);
+        }
+
         
     }
 }

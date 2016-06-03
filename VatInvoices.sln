@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naftan.VatInvoices", "Nafta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naftan.VatInvoices.Tests", "Naftan.VatInvoices.Tests\Naftan.VatInvoices.Tests.csproj", "{9E229122-E6D3-459F-AC8D-1B8B0CFACF0A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XpTest", "XpTest\XpTest.csproj", "{C86D72A6-A3DF-415D-A20E-777A5F172BD2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{9E229122-E6D3-459F-AC8D-1B8B0CFACF0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E229122-E6D3-459F-AC8D-1B8B0CFACF0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E229122-E6D3-459F-AC8D-1B8B0CFACF0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C86D72A6-A3DF-415D-A20E-777A5F172BD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C86D72A6-A3DF-415D-A20E-777A5F172BD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C86D72A6-A3DF-415D-A20E-777A5F172BD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C86D72A6-A3DF-415D-A20E-777A5F172BD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
