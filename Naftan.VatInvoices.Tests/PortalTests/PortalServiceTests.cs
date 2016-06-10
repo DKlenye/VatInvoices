@@ -12,7 +12,7 @@ namespace Naftan.VatInvoices.Tests.PortalTests
     public class PortalServiceTests
     {
         private readonly IPortalService service = new PortalService(
-            VatInvoiceService.PortalUrl,
+            Settings.PortalUrl,
             new Connector(),
             new VatInvoiceSerializer()
             );

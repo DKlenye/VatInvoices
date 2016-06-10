@@ -9,12 +9,21 @@ namespace Naftan.VatInvoices.Commands
 {
     public class UpdateVatInvoice : ICommand
     {
-        public UpdateVatInvoice(VatInvoice invoice)
+        public UpdateVatInvoice(VatInvoice invoice, bool headerOnly = false)
         {
+            HeaderOnly = headerOnly;
             Invoice = invoice;
         }
 
+        /// <summary>
+        /// ЭСЧФ
+        /// </summary>
         public VatInvoice Invoice { get; private set; }
+
+        /// <summary>
+        /// Обновить информацию только по головной части ЭСЧФ
+        /// </summary>
+        public bool HeaderOnly { get; private set; }
 
         public void Execute(IDbConnection db, IDbTransaction tx)
         {
@@ -95,88 +104,89 @@ namespace Naftan.VatInvoices.Commands
                 WHERE 
                     InvoiceId = @InvoiceId", param, tx);
 
-
-            Invoice.Documents.ToList().ForEach(x =>
+            if (!HeaderOnly)
             {
-                if (x.Id == 0)
+                Invoice.Documents.ToList().ForEach(x =>
                 {
-                    x.InvoiceId = Invoice.InvoiceId;
-                    db.Insert(x, tx);
-                }
-                else db.Update(x, tx);
-            });
+                    if (x.Id == 0)
+                    {
+                        x.InvoiceId = Invoice.InvoiceId;
+                        db.Insert(x, tx);
+                    }
+                    else db.Update(x, tx);
+                });
 
-            var DocumentMap = Invoice.Documents.ToDictionary(x => x.Id, x => x);
+                var DocumentMap = Invoice.Documents.ToDictionary(x => x.Id, x => x);
 
-            new SelectDocumentsByInvoiceId(Invoice.InvoiceId).Execute(db, tx).ToList().ForEach(x =>
-            {
-                if (!DocumentMap.ContainsKey(x.Id))
+                new SelectDocumentsByInvoiceId(Invoice.InvoiceId).Execute(db, tx).ToList().ForEach(x =>
                 {
-                    db.Delete(x, tx);
-                }
-            });
+                    if (!DocumentMap.ContainsKey(x.Id))
+                    {
+                        db.Delete(x, tx);
+                    }
+                });
 
-            Invoice.Consignees.ToList().ForEach(x =>
-            {
-                if (x.Id == 0)
+                Invoice.Consignees.ToList().ForEach(x =>
                 {
-                    x.InvoiceId = Invoice.InvoiceId;
-                    db.Insert(x, tx);
-                }
-                else db.Update(x, tx);
-            });
+                    if (x.Id == 0)
+                    {
+                        x.InvoiceId = Invoice.InvoiceId;
+                        db.Insert(x, tx);
+                    }
+                    else db.Update(x, tx);
+                });
 
-            var ConsigneeMap = Invoice.Consignees.ToDictionary(x => x.Id, x => x);
+                var ConsigneeMap = Invoice.Consignees.ToDictionary(x => x.Id, x => x);
 
-            new SelectConsigneesByInvoiceId(Invoice.InvoiceId).Execute(db, tx).ToList().ForEach(x =>
-            {
-                if (!ConsigneeMap.ContainsKey(x.Id))
+                new SelectConsigneesByInvoiceId(Invoice.InvoiceId).Execute(db, tx).ToList().ForEach(x =>
                 {
-                    db.Delete(x, tx);
-                }
-            });
+                    if (!ConsigneeMap.ContainsKey(x.Id))
+                    {
+                        db.Delete(x, tx);
+                    }
+                });
 
 
-            Invoice.Consignors.ToList().ForEach(x =>
-            {
-                if (x.Id == 0)
+                Invoice.Consignors.ToList().ForEach(x =>
                 {
-                    x.InvoiceId = Invoice.InvoiceId;
-                    db.Insert(x, tx);
-                }
-                else db.Update(x, tx);
-            });
+                    if (x.Id == 0)
+                    {
+                        x.InvoiceId = Invoice.InvoiceId;
+                        db.Insert(x, tx);
+                    }
+                    else db.Update(x, tx);
+                });
 
-            var ConsignorMap = Invoice.Consignors.ToDictionary(x => x.Id, x => x);
+                var ConsignorMap = Invoice.Consignors.ToDictionary(x => x.Id, x => x);
 
-            new SelectConsignorsByInvoiceId(Invoice.InvoiceId).Execute(db, tx).ToList().ForEach(x =>
-            {
-                if (!ConsignorMap.ContainsKey(x.Id))
+                new SelectConsignorsByInvoiceId(Invoice.InvoiceId).Execute(db, tx).ToList().ForEach(x =>
                 {
-                    db.Delete(x, tx);
-                }
-            });
+                    if (!ConsignorMap.ContainsKey(x.Id))
+                    {
+                        db.Delete(x, tx);
+                    }
+                });
 
-            Invoice.RosterList.ToList().ForEach(x =>
-            {
-                if (x.Id == 0)
+                Invoice.RosterList.ToList().ForEach(x =>
                 {
-                    x.InvoiceId = Invoice.InvoiceId;
-                    new InsertRoster(x).Execute(db, tx);
-                }
-                else new UpdateRoster(x).Execute(db, tx);
-            });
+                    if (x.Id == 0)
+                    {
+                        x.InvoiceId = Invoice.InvoiceId;
+                        new InsertRoster(x).Execute(db, tx);
+                    }
+                    else new UpdateRoster(x).Execute(db, tx);
+                });
 
-            var RosterMap = Invoice.RosterList.ToDictionary(x => x.Id, x => x);
+                var RosterMap = Invoice.RosterList.ToDictionary(x => x.Id, x => x);
 
-            new SelectRostersByInvoiceId(Invoice.InvoiceId).Execute(db, tx).ToList().ForEach(x =>
-            {
-                if (!RosterMap.ContainsKey(x.Id))
+                new SelectRostersByInvoiceId(Invoice.InvoiceId).Execute(db, tx).ToList().ForEach(x =>
                 {
-                    new DeleteRoster(x).Execute(db, tx);
-                }
-            });
-
+                    if (!RosterMap.ContainsKey(x.Id))
+                    {
+                        new DeleteRoster(x).Execute(db, tx);
+                    }
+                });
+            }
         }
     }
 }

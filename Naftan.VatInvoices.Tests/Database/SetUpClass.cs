@@ -11,7 +11,7 @@ namespace Naftan.VatInvoices.Tests.Database
            
            BaseDatabaseTest.CreateDataBase();
            BaseDatabaseTest.CreateTables();
-           // BaseDatabaseTest.CreateProcedures();
+           BaseDatabaseTest.CreateProcedures();
         }
 
         [TearDown]

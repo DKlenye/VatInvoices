@@ -39,9 +39,15 @@ namespace Naftan.VatInvoices.Tests.VatInvoiceServiceTests
         }
 
         [Test]
+        public void CancelApproveTest()
+        {
+            service.CancelApproveVatInvoice(118);
+        }
+
+        [Test]
         public void SignAndSendTest()
         {
-            var rezult = service.SignAndSend(120);
+            var rezult = service.SignAndSend(131);
             Console.WriteLine(rezult.First().Message);
         }
 
@@ -56,15 +62,22 @@ namespace Naftan.VatInvoices.Tests.VatInvoiceServiceTests
         [Test]
         public void CheckStatusTest()
         {
-            service.CheckStatus();
+            var rez = service.CheckStatus();
+            rez.ToList().ForEach(x=>Console.WriteLine("{0} {1} {2}",x.InvoiceId, x.NumberString,x.InvoiceStatus.ToString()));
         }
 
         [Test]
         public void ReceiveIncome()
         {
-            service.ReceiveIncoming();
+            var dto = service.ReceiveIncoming();
         }
-        
+
+        [Test]
+        public void LoadAccountList()
+        {
+            var accounts = service.LoadAccountList(201604, "90,18");
+            accounts.ToList().ForEach(x=>Console.WriteLine("{0}-{1}",x.FullAccount,x.LabelCostItem));
+        }
 
     }
 }

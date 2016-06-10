@@ -6,20 +6,24 @@ namespace Naftan.VatInvoices.Queries
     {
         public SelectVatInvoiceDtoForCheckStatus()
         {
-            Statuses = new []
+            OutStatuses = new[]
             {
-                InvoiceStatus.IN_PROGRESS, 
-                InvoiceStatus.IN_PROGRESS_ERROR,
+                InvoiceStatus.COMPLETED
+            };
+
+            InStatuses = new[]
+            {
                 InvoiceStatus.COMPLETED,
-                InvoiceStatus.CANCELLED,
+                InvoiceStatus.COMPLETED_SIGNED
             };
         }
 
-        public InvoiceStatus[] Statuses { get; private set; }
-
+        public InvoiceStatus[] OutStatuses { get; private set; }
+        public InvoiceStatus[] InStatuses { get; private set; }
+        
         protected override string Sql
         {
-            get { return base.Sql + " WHERE  StatusId in @Statuses and IsIncome = 0"; }
+            get { return base.Sql + " WHERE (StatusId in @OutStatuses and IsIncome = 0) or (StatusId in @InStatuses and IsIncome = 1)"; }
         }
 
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using Naftan.VatInvoices.Domain;
@@ -15,7 +16,7 @@ namespace Naftan.VatInvoices.Impl
 
         public MockVatInvoiceService()
         {
-            _db = new Database(new SqlConnection(VatInvoiceService.ConnectionString));
+            _db = new Database(new SqlConnection(Settings.ConnectionString));
         }
 
         public IEnumerable<VatInvoiceDto> LoadVatInvoices(int? period = null)
@@ -86,12 +87,17 @@ namespace Naftan.VatInvoices.Impl
             throw new System.NotImplementedException();
         }
 
-        public IEnumerable<VatInvoiceDto> ReceiveIncoming()
+        public IEnumerable<VatInvoiceDto> ReceiveIncoming(DateTime? date = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<UserRoles> GetUserRoles()
         {
             throw new System.NotImplementedException();
         }
 
-        public IEnumerable<UserRoles> GetUserRoles()
+        public IEnumerable<AccountList> LoadAccountList(int period, string accounts)
         {
             throw new System.NotImplementedException();
         }

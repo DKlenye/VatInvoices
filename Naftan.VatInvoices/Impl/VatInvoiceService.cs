@@ -18,17 +18,7 @@ namespace Naftan.VatInvoices.Impl
     /// </summary>
     public class VatInvoiceService : IVatInvoiceService
     {
-        /// <summary>
-        /// Строка подключения к БД ЭСЧФ
-        /// </summary>
-        public static string ConnectionString =
-            "data source=db3; initial catalog=NDSInvoices; integrated security=SSPI;";
-
-        /// <summary>
-        ///  url адрес веб сервиса портала МНС
-        /// </summary>
-        public static string PortalUrl = "https://vat.gov.by:4443/InvoicesWS/services/InvoicesPort";
-
+       
         private IPortalService _portal;
 
         private IPortalService portal
@@ -36,7 +26,7 @@ namespace Naftan.VatInvoices.Impl
             get
             {
                 return _portal ?? (_portal = new PortalService(
-                    PortalUrl,
+                    Settings.PortalUrl,
                     new Connector(),
                     new VatInvoiceSerializer())
                     );
@@ -53,16 +43,27 @@ namespace Naftan.VatInvoices.Impl
             _portal = portal;
             _db = db;
 
+            var EEUCountries = _db.Execute(new SelectEEUCountryAll());
+
             Validations = new IValidation<VatInvoice>[]
             {
                 new VatZeroValidation(),
-                new OriginalVatInvoiceNumberValidation(_db)
+                new OriginalVatInvoiceNumberValidation(_db),
+                new DateCancelledValidation(), 
+                new RosterTotalsValidation(),
+                new ProviderRecipientStatusValidation(), 
+                new ProviderValidation(), 
+                new ProviderDeclarationValidation(EEUCountries), 
+                new ProviderRecipientUnpValidation(), 
+                new DocumentValidation(), 
             };
+
+            _db.Commit();
 
 
         }
 
-        public VatInvoiceService(): this(null,new Database(new SqlConnection(ConnectionString)))
+        public VatInvoiceService(): this(null,new Database(new SqlConnection(Settings.ConnectionString)))
         {}
       
         public IEnumerable<VatInvoiceDto> LoadVatInvoices(int? period = null)
@@ -88,8 +89,25 @@ namespace Naftan.VatInvoices.Impl
 
         public VatInvoiceDto SaveVatInvoice(VatInvoice invoice)
         {
-            if (invoice.InvoiceId == 0) _db.Execute(new InsertVatInvoice(invoice));
-            else _db.Execute(new UpdateVatInvoice(invoice));
+            if (invoice.InvoiceId == 0)
+            {
+
+                var numberCommand = new GenerateVatInvoiceNumber(DateTime.Now.Year);
+                _db.Execute(numberCommand);
+
+                invoice.VatNumber = new VatInvoiceNumber(numberCommand.NumberString);
+
+                invoice.IsIncome = false;
+                invoice.Sender = Settings.SenderUnp;
+                invoice.Validate(Validations);
+
+                _db.Execute(new InsertVatInvoice(invoice));
+            }
+            else
+            {
+                invoice.Validate(Validations);
+                _db.Execute(new UpdateVatInvoice(invoice));
+            }
             var dto = _db.Execute(new SelectVatInvoiceDtoByIds(invoice.InvoiceId));
             return dto.FirstOrDefault();
         }
@@ -130,7 +148,7 @@ namespace Naftan.VatInvoices.Impl
             {
                 var invoice = _db.Execute(new SelectVatInvoiceById(id));
                 invoice.Approve(userName);
-                _db.Execute(new UpdateVatInvoice(invoice));
+                _db.Execute(new UpdateVatInvoice(invoice,true));
             });
 
             var dto = _db.Execute(new SelectVatInvoiceDtoByIds(invoiceId));
@@ -140,11 +158,13 @@ namespace Naftan.VatInvoices.Impl
 
         public IEnumerable<VatInvoiceDto> CancelApproveVatInvoice(params int[] invoiceId)
         {
+            var userName = CurrentUser.Name;
+
             invoiceId.ToList().ForEach(id =>
             {
                 var invoice = _db.Execute(new SelectVatInvoiceById(id));
-                invoice.CancelApprove();
-                _db.Execute(new UpdateVatInvoice(invoice));
+                invoice.CancelApprove(userName);
+                _db.Execute(new UpdateVatInvoice(invoice,true));
             });
 
             var dto = _db.Execute(new SelectVatInvoiceDtoByIds(invoiceId));
@@ -168,17 +188,18 @@ namespace Naftan.VatInvoices.Impl
 
             invoices.ForEach(i =>
             {
-                if (i.IsIncome && i.Status == InvoiceStatus.COMPLETED) completedIn.Add(i);
+                if (i.IsIncome && i.Status == InvoiceStatus.COMPLETED && i.IsApprove()) completedIn.Add(i);
                 else if (
                     !i.IsIncome && 
-                    (i.Status == InvoiceStatus.IN_PROGRESS || i.Status == InvoiceStatus.IN_PROGRESS_ERROR))
+                    i.IsApprove() &&
+                    (i.Status == InvoiceStatus.IN_PROGRESS || i.Status == InvoiceStatus.PORTAL_ERROR))
                     inprogressOut.Add(i);
                 else error.Add(i);
             });
 
             rezult = _db.Execute(
                 new SelectVatInvoiceDtoByIds(error.Select(x => x.InvoiceId).ToArray()))
-                    .Select(x => new SendRezult(x, "ЭСЧФ нельзя отправить на портал. Неверный статус.", true)).ToList();
+                    .Select(x => new SendRezult(x, "ЭСЧФ нельзя отправить на портал. Неверный статус или нет подтверждения бухгалтера.", true)).ToList();
             _db.Commit();
 
             rezult.AddRange(SignAndSendOut(inprogressOut.ToArray()));
@@ -191,14 +212,15 @@ namespace Naftan.VatInvoices.Impl
         private IEnumerable<SendRezult> SignAndSendOut(params VatInvoice[] invoices)
         {
             var rezult = new List<SendRezult>();
-
             var info = portal.SignAndSendOut(invoices);
+            
             info.ToList().ForEach(x=>
             {
                 var invoice = x.Invoice;
                 if (!x.IsException)
                 {
                     invoice.SetStatus(InvoiceStatus.COMPLETED,"");
+                    invoice.DateIssuance = DateTime.Now;
                     var xml = new VatInvoiceXml
                     {
                         InvoiceId = invoice.InvoiceId,
@@ -209,10 +231,10 @@ namespace Naftan.VatInvoices.Impl
                 }
                 else
                 {
-                    invoice.SetStatus(InvoiceStatus.IN_PROGRESS_ERROR, x.Message);
+                    invoice.SetStatus(InvoiceStatus.PORTAL_ERROR, x.Message);
                 }
 
-                _db.Execute(new UpdateVatInvoice(invoice));
+                _db.Execute(new UpdateVatInvoice(invoice,true));
 
                 rezult.Add(new SendRezult(
                          _db.Execute(new SelectVatInvoiceDtoByIds(invoice.InvoiceId)).Single(),
@@ -261,7 +283,7 @@ namespace Naftan.VatInvoices.Impl
                     invoice.SetStatus(InvoiceStatus.COMPLETED, i.Message);
                 }
 
-                _db.Execute(new UpdateVatInvoice(invoice));
+                _db.Execute(new UpdateVatInvoice(invoice,true));
 
                 rezult.Add(new SendRezult(
                         _db.Execute(new SelectVatInvoiceDtoByIds(invoice.InvoiceId)).Single(),
@@ -293,7 +315,7 @@ namespace Naftan.VatInvoices.Impl
                     {
                         var invoice = _db.Execute(new SelectVatInvoiceById(dto.InvoiceId));
                         invoice.SetStatus(status, "");
-                        _db.Execute(new UpdateVatInvoice(invoice));
+                        _db.Execute(new UpdateVatInvoice(invoice,true));
                         statusChanged.Add(dto);
                     }
                 }
@@ -304,32 +326,35 @@ namespace Naftan.VatInvoices.Impl
             return changes;
         }
 
-        public IEnumerable<VatInvoiceDto> ReceiveIncoming()
+        public IEnumerable<VatInvoiceDto> ReceiveIncoming(DateTime? date = null)
         {
-            var date = _db.Execute(new SelectMaxIncomeDate());
-            _db.Commit();
-            var info = portal.LoadIncomeVatInvoice(date);
+            if (date == null)
+            {
+                date = _db.Execute(new SelectMaxIncomeDate());
+                _db.Commit();
+            }
+           
+            var info = portal.LoadIncomeVatInvoice(date.Value);
             var newInvoices = new List<VatInvoice>();
 
             info.ToList().ForEach(i =>
             {
-                if(!_db.Execute(new SelectVatInvoiceDtoByNumber(i.Number)).Any())
+                if (!_db.Execute(new SelectVatInvoiceDtoByNumber(i.Number)).Any())
                 {
-
                     var invoice = i.Invoice;
                     invoice.IsIncome = true;
                     invoice.BuySaleType = BuySaleType.Buy;
                     invoice.AccountingDate = invoice.DateIssuance ?? invoice.DateTransaction;
                     invoice.SetStatus(InvoiceStatus.COMPLETED);
-                    
+                    invoice.Validate(new IValidation<VatInvoice>[] {});
                     _db.Execute(new InsertVatInvoice(invoice));
                     _db.Execute(new InsertVatInvoiceXml(
                         new VatInvoiceXml
-                    {
-                        InvoiceId = i.Invoice.InvoiceId,
-                        Xml = i.Xml,
-                        SignXml = i.SignXml
-                    }));
+                        {
+                            InvoiceId = i.Invoice.InvoiceId,
+                            Xml = i.Xml,
+                            SignXml = i.SignXml
+                        }));
                     newInvoices.Add(i.Invoice);
                 }
             });
@@ -352,11 +377,19 @@ namespace Naftan.VatInvoices.Impl
                 {
                     var invoice = _db.Execute(new SelectVatInvoiceById(x.InvoiceId));
                     invoice.Validate(Validations);
-                    _db.Execute(new UpdateVatInvoice(invoice));
+                    _db.Execute(new UpdateVatInvoice(invoice,true));
                 });
 
             _db.Commit();
         }
+
+
+        public IEnumerable<AccountList> LoadAccountList(int period, string accounts)
+          {
+              var list = _db.Execute(new SelectAccountListByPeriod(new DatePeriod(period), accounts));
+              _db.Commit();
+              return list;
+          } 
 
     }
 }

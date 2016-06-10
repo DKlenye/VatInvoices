@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using EInvVatService;
 using Naftan.VatInvoices.Domain;
 using Naftan.VatInvoices.Dto;
@@ -66,7 +67,8 @@ namespace Naftan.VatInvoices.Impl
                     i = new SendOutInfo(x, true, ExceptionMessage("Ошибка загрузки информации"));
                 else
                 {
-                    if (eDoc.Sign[0] != 0) i = new SendOutInfo(x, true, ExceptionMessage("Ошибка подписи"));
+                    if (eDoc.Sign[0] != 0) 
+                        i = new SendOutInfo(x, true, ExceptionMessage("Ошибка подписи"));
                     else
                     {
                         if (connector.SendEDoc[eDoc] != 0)
@@ -82,14 +84,34 @@ namespace Naftan.VatInvoices.Impl
                             else
                             {
 
+                                //Если документ принят порталом, то мы всё равно пытаемся получить его статус, так как портал может принять документ,
+                                //но по результатам форматно-логического контроля не добавить его
 
-                                i = new SendOutInfo(
-                                    x,
-                                    false,
-                                    ticket.Message,
-                                    Encoding.UTF8.GetString(Convert.FromBase64String(eDoc.Document.GetData[1])),
-                                    Encoding.UTF8.GetString(Convert.FromBase64String(eDoc.GetData[1]))
-                                    );
+                                var status = connector.GetStatus[x.VatNumber.NumberString];
+
+                                if (status == null)
+                                    i = new SendOutInfo(x, true, "ЭСЧФ не прошёл проверку на портале статус не принят");
+                                else
+                                {
+                                    if (status.Verify != 0)
+                                        i = new SendOutInfo(x, true, ExceptionMessage("Ошибка получения статуса"));
+                                    else
+                                    {
+                                        if (status.Status == "NOT_FOUND")
+                                            i = new SendOutInfo(x, true, "ЭСЧФ не прошёл проверку на портале");
+                                        else
+                                        {
+                                            i = new SendOutInfo(
+                                                x,
+                                                false,
+                                                ticket.Message,
+                                                Encoding.UTF8.GetString(
+                                                    Convert.FromBase64String(eDoc.Document.GetData[1])),
+                                                Encoding.UTF8.GetString(Convert.FromBase64String(eDoc.GetData[1]))
+                                                );
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -122,7 +144,8 @@ namespace Naftan.VatInvoices.Impl
                            //     i = new SendInInfo(x, true, ExceptionMessage("Ошибка проверки подписи "));
                            // else
                             {
-                                if (eDoc.Sign[0] != 0) i = new SendInInfo(x, true, ExceptionMessage("Ошибка подписи"));
+                                if (eDoc.Sign[0] != 0) 
+                                    i = new SendInInfo(x, true, ExceptionMessage("Ошибка подписи"));
                                 else
                                 {
                                     if (connector.SendEDoc[eDoc] != 0)
@@ -166,8 +189,11 @@ namespace Naftan.VatInvoices.Impl
             invoices.ToList().ForEach(i =>
             {
                 var status = connector.GetStatus[i.NumberString];
-                if (status.Verify != 0) ThrowException("Ошибка верификации статуса: ");
-                info.Add(new StatusInfo(i, status.Status, status.Message, status.Since));
+                if (status != null)
+                {
+                    if (status.Verify != 0) ThrowException("Ошибка верификации статуса: ");
+                    info.Add(new StatusInfo(i, status.Status, status.Message, status.Since));
+                }
 
             });
             Disconnect();
@@ -177,6 +203,8 @@ namespace Naftan.VatInvoices.Impl
         public IEnumerable<LoadInfo> LoadIncomeVatInvoice(DateTime date)
         {
             var info = new List<LoadInfo>();
+
+            var removeXmlDeclarationRegex = new Regex(@"<\?xml.*\?>");
 
             Connect();
             var list = connector.GetList[date.ToString("s")];
@@ -195,6 +223,9 @@ namespace Naftan.VatInvoices.Impl
                         {
                             var signXml = Encoding.UTF8.GetString(Convert.FromBase64String(eDoc.GetData[1]));
                             var xml = Encoding.UTF8.GetString(Convert.FromBase64String(eDoc.Document.GetData[1]));
+
+                            xml = removeXmlDeclarationRegex.Replace(xml, "");
+
                             var invoice = serializer.Deserialize(xml);
 
                             info.Add(new LoadInfo(invoice, number, xml, signXml));
@@ -210,5 +241,8 @@ namespace Naftan.VatInvoices.Impl
 
             return info;
         }
+        
+      
+
     }
 }

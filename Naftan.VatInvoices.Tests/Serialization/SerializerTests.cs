@@ -50,7 +50,8 @@ namespace Naftan.VatInvoices.Tests.Serialization
             var invoice = serializer.Deserialize(xml);
             var invoiceString = serializer.Serialize(invoice);
 
-            Console.Write(invoiceString);
+            Console.WriteLine(invoiceString);
+            Console.WriteLine(xml);
             Assert.AreEqual(xml,invoiceString);
 
         }

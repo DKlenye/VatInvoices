@@ -13,6 +13,9 @@ namespace Naftan.VatInvoices.Dto
         [DisplayName("")]
         public bool Check { get; set; }
 
+        [DisplayName("")]
+        public int CkeckInt { get; set; }
+
         [DisplayName("Код")]
         public int InvoiceId { get; set; }
 

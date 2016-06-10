@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Naftan.VatInvoices.Extensions;
 using Naftan.VatInvoices.Mnsati;
 using Naftan.VatInvoices.Validations;
 
@@ -142,16 +141,27 @@ namespace Naftan.VatInvoices.Domain
         /// <summary>
         /// Отмена подтверждения счёта фактуры для передачи на портал МНС
         /// </summary>
-        public void CancelApprove()
+        public void CancelApprove(string user)
         {
-            if (! new[] {InvoiceStatus.IN_PROGRESS, InvoiceStatus.IN_PROGRESS_ERROR}
-                .Contains(Status))
-            {
-                throw new Exception("Отменить подтверждение невозможно. ЭСЧФ отправлен на портал.");
-            }
-
             if (IsApprove())
             {
+
+                var enableApproveStatus = new[]
+                {
+                    InvoiceStatus.IN_PROGRESS, 
+                    InvoiceStatus.IN_PROGRESS_ERROR
+                };
+
+                if (!enableApproveStatus.Contains(Status))
+                {
+                    throw new Exception("Отменить подтверждение невозможно. ЭСЧФ отправлен на портал.");
+                }
+
+                if (ApproveUser != user)
+                {
+                    throw new Exception("ЭСЧФ подтверждён другим пользователем. Отменить подтверждение невозможно.");
+                }
+                
                 ApproveDate = null;
                 ApproveUser = null;
             }
@@ -179,11 +189,16 @@ namespace Naftan.VatInvoices.Domain
             if (enableValidateStatus.Contains(Status))
             {
                 var errors = new List<string>();
-                validations.ToList().ForEach(v => errors.AddRange(v.IsValid(this)));
+                validations.ToList().ForEach(v => errors.AddRange(v.Validate(this)));
 
                 if (!IsValidate) IsValidate = true;
 
-                if (errors.Any()) SetStatus(InvoiceStatus.IN_PROGRESS_ERROR,String.Join(",",errors));
+                var message = String.Join(","+Environment.NewLine, errors);
+
+                if (message.Length > 500)
+                    message = message.Substring(0, 499);    
+
+                if (errors.Any()) SetStatus(InvoiceStatus.IN_PROGRESS_ERROR,message);
                 else SetStatus(InvoiceStatus.IN_PROGRESS);
             }
         }

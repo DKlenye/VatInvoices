@@ -1,0 +1,1 @@
+Nuget.exe pack ..\Naftan.VatInvoices\Naftan.VatInvoices.csproj

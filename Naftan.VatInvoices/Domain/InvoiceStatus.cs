@@ -7,7 +7,6 @@ namespace Naftan.VatInvoices.Domain
     /// </summary>
     public enum InvoiceStatus
     {
-
         /// <summary>
         /// В разработке
         /// </summary>
@@ -35,6 +34,11 @@ namespace Naftan.VatInvoices.Domain
         /// <summary>
         /// Аннулирован
         /// </summary>
-        [Description("Аннулирован")] CANCELLED = 7
+        [Description("Аннулирован")] CANCELLED = 7,
+        /// <summary>
+        /// Ошибка портала
+        /// </summary>
+        [Description("Ошибка портала")] PORTAL_ERROR = 8
+
     }
 }

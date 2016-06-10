@@ -13,7 +13,7 @@ namespace Naftan.VatInvoices.Queries
             SELECT MAX(DateIssuance) FROM VatInvoice WHERE IsIncome = 1
             ",transaction:tx).FirstOrDefault();
 
-            return date ?? DateTime.Now;
+            return date ?? DateTime.Now.AddDays(-31);
         }
     }
 }

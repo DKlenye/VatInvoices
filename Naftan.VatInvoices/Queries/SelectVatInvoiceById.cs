@@ -89,7 +89,6 @@ namespace Naftan.VatInvoices.Queries
                         RosterTotalCost,             
                         ApproveDate, 
                         ApproveUser,
-                        ApproveDateExport,
                         IsValidate
                   FROM VatInvoice where InvoiceId = @Id",
                        (number, provider, recipient, invoice) =>

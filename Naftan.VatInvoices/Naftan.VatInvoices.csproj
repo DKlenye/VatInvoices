@@ -11,6 +11,8 @@
     <AssemblyName>Naftan.VatInvoices</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,6 +57,7 @@
     <Compile Include="Commands\AbstractInsertCommand.cs" />
     <Compile Include="Commands\AbstractSqlCommand.cs" />
     <Compile Include="Commands\AbstractUpdateCommand.cs" />
+    <Compile Include="Commands\DDL\CreateProcedure\spu_GenerateVatInvoiceNumber.cs" />
     <Compile Include="Commands\DDL\CreateTable\CreateConsignees.cs" />
     <Compile Include="Commands\DDL\CreateTable\CreateConsignors.cs" />
     <Compile Include="Commands\DDL\CreateTable\CreateDocuments.cs" />
@@ -85,6 +88,7 @@
     <Compile Include="Domain\Consignor.cs" />
     <Compile Include="Domain\Document.cs" />
     <Compile Include="Domain\DocumentType.cs" />
+    <Compile Include="Domain\EEUCountry.cs" />
     <Compile Include="Domain\InvoiceStatus.cs" />
     <Compile Include="Domain\DatePeriod.cs" />
     <Compile Include="Domain\IVatInvoiceId.cs" />
@@ -114,6 +118,7 @@
     <Compile Include="Mappers\ConsignorMapper.cs" />
     <Compile Include="Mappers\DocumentMapper.cs" />
     <Compile Include="Mappers\DocumentTypeMapper.cs" />
+    <Compile Include="Mappers\EEUCountryMapper.cs" />
     <Compile Include="Mappers\RosterMapper.cs" />
     <Compile Include="Mappers\VatInvoiceXmlMapper.cs" />
     <Compile Include="Mnsati\Additional\issuance.cs" />
@@ -153,6 +158,7 @@
     <Compile Include="Queries\SelectConsigneesByInvoiceId.cs" />
     <Compile Include="Queries\SelectConsignorsByInvoiceId.cs" />
     <Compile Include="Queries\SelectDocumentsByInvoiceId.cs" />
+    <Compile Include="Queries\SelectEEUCountryAll.cs" />
     <Compile Include="Queries\SelectMaxIncomeDate.cs" />
     <Compile Include="Queries\SelectRostersByInvoiceId.cs" />
     <Compile Include="Queries\SelectVatInvoiceById.cs" />
@@ -169,11 +175,19 @@
     <Compile Include="Impl\VatInvoiceService.cs" />
     <Compile Include="IVatInvoiceService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="StatusInfo.cs" />
     <Compile Include="Users\CurrentUser.cs" />
     <Compile Include="Users\UserRoles.cs" />
+    <Compile Include="Validations\DateCancelledValidation.cs" />
+    <Compile Include="Validations\DocumentValidation.cs" />
     <Compile Include="Validations\IValidation.cs" />
     <Compile Include="Validations\OriginalVatInvoiceNumberValidation.cs" />
+    <Compile Include="Validations\ProviderDeclarationValidation.cs" />
+    <Compile Include="Validations\ProviderRecipientStatusValidation.cs" />
+    <Compile Include="Validations\ProviderRecipientUnpValidation.cs" />
+    <Compile Include="Validations\ProviderValidation.cs" />
+    <Compile Include="Validations\RosterSummaryValidation.cs" />
     <Compile Include="Validations\VatZeroValidation.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -207,6 +221,13 @@
     </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

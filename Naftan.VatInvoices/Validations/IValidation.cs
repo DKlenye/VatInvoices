@@ -4,6 +4,6 @@ namespace Naftan.VatInvoices.Validations
 {
     public interface IValidation<T>
     {
-        IList<string> IsValid(T obj);
+        IList<string> Validate(T obj);
     }
 }

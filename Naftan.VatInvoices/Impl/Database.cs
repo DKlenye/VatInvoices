@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 
 namespace Naftan.VatInvoices.Impl
 {
@@ -39,8 +40,12 @@ namespace Naftan.VatInvoices.Impl
         {
             if (tx != null)
             {
-                tx.Commit();
-                tx.Dispose();
+                try
+                {
+                    tx.Commit();
+                    tx.Dispose();
+                }
+                catch (Exception ex) { }
                 tx = null;
                 db.Close();
             }

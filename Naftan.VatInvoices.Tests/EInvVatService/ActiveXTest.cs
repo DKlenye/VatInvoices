@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using EInvVatService;
-using Naftan.VatInvoices.Impl;
 using NUnit.Framework;
 
 namespace Naftan.VatInvoices.Tests.EInvVatService
@@ -11,7 +10,7 @@ namespace Naftan.VatInvoices.Tests.EInvVatService
     {
         public static Connector connector;
         public static int loginRezult;
-        private readonly string portalUrl = VatInvoiceService.PortalUrl;
+        private readonly string portalUrl = Settings.PortalUrl;
 
         private bool IsLogin
         {

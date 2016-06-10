@@ -19,7 +19,7 @@ namespace Naftan.VatInvoices.Converters
 
         public document From(Document obj)
         {
-            return new document()
+            return new document
             {
                 blankCode = obj.BlancCode,
                 date = obj.Date.Value,

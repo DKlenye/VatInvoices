@@ -8,23 +8,46 @@ namespace Naftan.VatInvoices.Mnsati
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://www.w3schools.com")]
     public enum recipientStatusType
     {
-
-        /// <remarks/>
+        
+        /// <summary>
+        /// Покупатель
+        /// </summary>
         [Description("Покупатель")] CUSTOMER = 1,
 
-        /// <remarks/>
+        /// <summary>
+        /// Потребитель
+        /// </summary>
         [Description("Потребитель")] CONSUMER = 2,
 
-        /// <remarks/>
+        /// <summary>
+        /// Комитент
+        /// </summary>
         [Description("Комитент")] CONSIGNOR = 3,
 
-        /// <remarks/>
+        /// <summary>
+        /// Комиссионер
+        /// </summary>
         [Description("Комиссионер")] COMMISSIONAIRE = 4,
 
-        /// <remarks/>
+        /// <summary>
+        /// Покупатель, получающий налоговые вычеты
+        /// </summary>
         [Description("Покупатель, получающий налоговые вычеты")] TAX_DEDUCTION_RECIPIENT = 5,
 
-        /// <remarks/>
+        /// <summary>
+        /// Покупатель объектов у иностранной организации
+        /// </summary>
         [Description("Покупатель объектов у иностранной организации")] FOREIGN_ORGANIZATION_BUYER = 6,
+
+        /// <summary>
+        /// Посредник
+        /// </summary> 
+        [Description("Посредник")] AGENT = 7,
+
+        /// <summary>
+        /// Плательщик, получающий обороты по реализации
+        /// </summary>
+        [Description("Плательщик, получающий обороты по реализации")] TURNOVERS_ON_SALE_RECIPIENT = 8
+
     }
 }

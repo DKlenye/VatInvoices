@@ -14,7 +14,7 @@ namespace Naftan.VatInvoices.Validations
             "При указании ставки НДС 0%, либо «Без НДС» сумма НДС должна равняться нулю";
 
       
-        public IList<string> IsValid(VatInvoice obj)
+        public IList<string> Validate(VatInvoice obj)
         {
             var errorList = new List<string>();
 

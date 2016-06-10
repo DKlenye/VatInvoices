@@ -18,6 +18,7 @@ namespace Naftan.VatInvoices.Queries
                     VatAccount, 
                     Account, 
                     StatusId as InvoiceStatus, 
+                    StatusMessage,
                     Sender, 
                     NumberString,
                     DateIssuance, 
@@ -71,7 +72,6 @@ namespace Naftan.VatInvoices.Queries
                     RosterTotalCost,
                     ApproveDate,
                     ApproveUser,
-                    ApproveDateExport,
                     IsValidate
                 FROM VatInvoice ";
             }

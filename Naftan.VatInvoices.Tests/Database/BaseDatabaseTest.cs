@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
+using Naftan.VatInvoices.Commands.DDL.CreateProcedure;
 using Naftan.VatInvoices.Commands.DDL.CreateTable;
 using Naftan.VatInvoices.Extensions;
 
@@ -41,31 +42,11 @@ namespace Naftan.VatInvoices.Tests.Database
             Db.Commit();
         }
 
-        /*
-
-        
-        public static void CreateTables()
-        {
-            var qo = new CreateTable();
-            Connection.Execute(qo.BuySaleType());
-            Connection.Execute(qo.InvoiceStatus());
-            Connection.Execute(qo.InvoiceType());
-            Connection.Execute(qo.ProviderStatus());
-            Connection.Execute(qo.RecipientStatus());
-            Connection.Execute(qo.ReplicationSource());
-            Connection.Execute(qo.VatInvoice());
-            Connection.Execute(qo.Consignees());
-            Connection.Execute(qo.Consignors());
-            Connection.Execute(qo.Documents());
-            Connection.Execute(qo.RosterList());
-        }
 
         public static void CreateProcedures()
         {
-            var qo = new CreateProcedure();
-            Connection.Execute(qo.GenerateVatInvoiceNumber());
-            Connection.Execute(qo.AddVatInvoice());
+            Db.Execute(new spu_GenerateVatInvoiceNumber());
         }
-        */
+            
     }
 }

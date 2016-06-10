@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Linq;
 using EInvVatService;
 using Naftan.VatInvoices;
 using Naftan.VatInvoices.Dto;
 using Naftan.VatInvoices.Impl;
+using Naftan.VatInvoices.Mnsati;
+using Naftan.VatInvoices.Queries;
 
 namespace XpTest
 {
@@ -11,8 +14,9 @@ namespace XpTest
     {
         static void Main(string[] args)
         {
+
             IPortalService service = new PortalService(
-            VatInvoiceService.PortalUrl,
+            Settings.PortalUrl,
             new Connector(),
             new VatInvoiceSerializer()
             );
@@ -23,7 +27,7 @@ namespace XpTest
             });
 
             Console.WriteLine(info.First().Message);
-            
+            Console.ReadKey();
         }
     }
 }

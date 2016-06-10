@@ -1,8 +1,10 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Linq;
 using Dapper;
 using DapperExtensions;
 using Naftan.VatInvoices.Domain;
+using Naftan.VatInvoices.Queries;
 
 namespace Naftan.VatInvoices.Commands
 {
@@ -17,6 +19,7 @@ namespace Naftan.VatInvoices.Commands
 
         public void Execute(IDbConnection db, IDbTransaction tx)
         {
+            
 
             var param = new DynamicParameters(Invoice)
                 .Output(Invoice, x => x.InvoiceId);
@@ -91,7 +94,6 @@ namespace Naftan.VatInvoices.Commands
 	            RosterTotalCost,
 	            ApproveDate,
                 ApproveUser,
-                ApproveDateExport,
                 IsValidate
             )
             VALUES
@@ -160,7 +162,6 @@ namespace Naftan.VatInvoices.Commands
 	            @RosterTotalCost,
                 @ApproveDate,
                 @ApproveUser,
-                @ApproveDateExport,
                 @IsValidate
             );
             SELECT @InvoiceId = SCOPE_IDENTITY();

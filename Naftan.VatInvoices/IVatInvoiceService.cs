@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Naftan.VatInvoices.Domain;
 using Naftan.VatInvoices.Dto;
 using Naftan.VatInvoices.Users;
@@ -85,8 +86,7 @@ namespace Naftan.VatInvoices
         /// <summary>
         /// Получить входящие ЭСЧФ с портала 
         /// </summary>
-        IEnumerable<VatInvoiceDto> ReceiveIncoming();
-
+        IEnumerable<VatInvoiceDto> ReceiveIncoming(DateTime? date = null);
 
         /// <summary>
         /// Получить список ролей текущего пользователя
@@ -94,5 +94,13 @@ namespace Naftan.VatInvoices
         /// <returns></returns>
         IEnumerable<UserRoles> GetUserRoles();
 
+        /// <summary>
+        /// Получить список бухгалтерских счетов
+        /// </summary>
+        /// <param name="period">yyyymm</param>
+        /// <param name="accounts">Список счетов, через запятую</param>
+        /// <returns></returns>
+        IEnumerable<AccountList> LoadAccountList(int period, string accounts);
+        
     }
 }
