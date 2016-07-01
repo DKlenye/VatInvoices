@@ -6,8 +6,8 @@
         static Settings()
         {
             SenderUnp = "300042199";
-            ConnectionString = "data source=db3; initial catalog=NDSInvoices; integrated security=SSPI;";
-            PortalUrl = "https://vat.gov.by:4443/InvoicesWS/services/InvoicesPort";
+            ConnectionString = "data source=db3.lan.naftan.by; initial catalog=NDSInvoices; integrated security=SSPI;";
+            PortalUrl = "https://ws.vat.gov.by:443/InvoicesWS/services/InvoicesPort";
         }
         
         /// <summary>

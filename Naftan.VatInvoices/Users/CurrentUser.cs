@@ -2,37 +2,17 @@
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
-using System.Security.Principal;
 using Naftan.VatInvoices.Extensions;
 
 namespace Naftan.VatInvoices.Users
 {
     public static class CurrentUser
     {
-        private const char DomainSplitter = '\\';
-
-        private static WindowsPrincipal GetPrincipal()
-        {
-            var identity = WindowsIdentity.GetCurrent() ?? WindowsIdentity.GetAnonymous();
-            return new WindowsPrincipal(identity);
-        }
-
-        private static string IdentityName
-        {
-            get { return GetPrincipal().Identity.Name; }
-        }
-
-        public static string Login
-        {
-            get { return IdentityName.Split(DomainSplitter)[1]; }
-        }
-
         public static string Name
         {
             get
             {
-                var context = UserPrincipal.Current;
-                return context.DisplayName;
+                return UserPrincipal.Current.DisplayName;
             }
         }
 
@@ -41,28 +21,20 @@ namespace Naftan.VatInvoices.Users
             get
             {
                 var userRoles = new List<UserRoles>();
-                var principal = GetPrincipal();
+                var userRolesMap = new Dictionary<string, UserRoles>();
 
-                Enum.GetNames(typeof (UserRoles)).ToList().ForEach(x =>
-                {
-                    if (principal.IsInRole(x))
+                Enum.GetNames(typeof (UserRoles)).ToList().ForEach(x => userRolesMap.Add(x,x.ConvertToEnum<UserRoles>()));
+                
+                UserPrincipal.Current.
+                    GetGroups(new PrincipalContext(ContextType.Domain, "lan.naftan.by")).ToList()
+                    .ForEach(x =>
                     {
-                        userRoles.Add(x.ConvertToEnum<UserRoles>());
-                    }
-                });
+                        if( userRolesMap.ContainsKey(x.Name))
+                            userRoles.Add(x.Name.ConvertToEnum<UserRoles>());
+                    });
 
                 return userRoles;
             }
-        }
-
-        private static bool IsInRole(UserRoles role)
-        {
-            return GetPrincipal().IsInRole(role.ToString());
-        }
-
-        public static bool IsAdmin()
-        {
-            return IsInRole(UserRoles.NDSInvoices_Admins);
         }
 
     }

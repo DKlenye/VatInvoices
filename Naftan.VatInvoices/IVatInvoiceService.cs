@@ -40,14 +40,14 @@ namespace Naftan.VatInvoices
         IEnumerable<Document> LoadDocuments(int invoiceId);
         
         /// <summary>
-        /// Загрузить список грузоотправителей по id ЭСЧФ
+        /// Загрузить список грузополучателей по id ЭСЧФ
         /// </summary>
         /// <param name="invoiceId"></param>
         /// <returns></returns>
         IEnumerable<Consignee> LoadConsignees(int invoiceId);
         
         /// <summary>
-        /// Загрузить список грузополучателей по id ЭСЧФ
+        /// Загрузить список грузоотправителей по id ЭСЧФ
         /// </summary>
         /// <param name="invoiceId"></param>
         /// <returns></returns>

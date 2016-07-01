@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Xml.Serialization;
 
 namespace Naftan.VatInvoices.Domain
 {
@@ -7,10 +8,10 @@ namespace Naftan.VatInvoices.Domain
     /// </summary>
     public class Consignor : IVatInvoiceId
     {
-        [DisplayName("Код")]
+        [DisplayName("Код"),XmlIgnore]
         public int Id { get; set; }
 
-        [DisplayName("Код ЭСЧФ")]
+        [DisplayName("Код ЭСЧФ"),XmlIgnore]
         public int InvoiceId { get; set; }
 
         [DisplayName("Код грузополучателя")]

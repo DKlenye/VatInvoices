@@ -43,6 +43,7 @@ namespace Naftan.VatInvoices.Converters
 
         public issuance From(VatInvoice obj)
         {
+
             return new issuance()
             {
                 sender = obj.Sender,
@@ -54,6 +55,7 @@ namespace Naftan.VatInvoices.Converters
                   dateTransaction = obj.DateTransaction,
                   documentType = obj.InvoiceType
                 },
+
                 senderReceiver = new senderReceiver
                 {
                     consignees = obj.Consignees.Select(x => x.ConvertTo<consignee>()).ToArray(),
@@ -64,8 +66,8 @@ namespace Naftan.VatInvoices.Converters
                     contract = new contract
                     {
                         date = obj.ContractDate.Value,
-                        number = obj.ContractNumber,
-                        documents = obj.Documents.Select(x=>x.ConvertTo<document>()).ToArray()
+                        number = obj.ContractNumber??"",
+                        documents = obj.Documents.Any()?obj.Documents.Select(x=>x.ConvertTo<document>()).ToArray():null
                     },
                     description = obj.ContractDescription
                 },

@@ -4,8 +4,9 @@ namespace Naftan.VatInvoices
 {
     public class SendOutInfo
     {
-        public SendOutInfo(VatInvoice invoice, bool isException, string message, string xml = null, string signXml = null)
+        public SendOutInfo(VatInvoice invoice, bool isException, string message, string xml = null, string signXml = null, InvoiceStatus? status = null)
         {
+            Status = status;
             SignXml = signXml;
             Xml = xml;
             Invoice = invoice;
@@ -18,5 +19,6 @@ namespace Naftan.VatInvoices
         public string Message { get; private set; }
         public string Xml { get; private set; }
         public string SignXml { get; private set; }
+        public InvoiceStatus? Status { get; private set; }
     }
 }

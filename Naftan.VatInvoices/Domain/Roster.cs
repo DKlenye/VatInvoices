@@ -1,5 +1,5 @@
-﻿
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using System.Xml.Serialization;
 using Naftan.VatInvoices.Mnsati;
 
 namespace Naftan.VatInvoices.Domain
@@ -12,10 +12,10 @@ namespace Naftan.VatInvoices.Domain
         [DisplayName("№ п.п.")]
         public int Number { get; set; }
 
-        [DisplayName("Код")]
+        [DisplayName("Код"), XmlIgnore]
         public int Id { get; set; }
 
-        [DisplayName("Код ЭСЧФ")]
+        [DisplayName("Код ЭСЧФ"), XmlIgnore]
         public int InvoiceId { get; set; }
         
         [DisplayName("Наименование")]

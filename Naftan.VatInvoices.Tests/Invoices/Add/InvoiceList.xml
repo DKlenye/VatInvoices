@@ -1,0 +1,219 @@
+<InvoiceList>
+	<Invoice
+	 ReplicationSourceId="5" 
+	 ReplicationId="1" 
+	 IsApprove="true" 
+	 ApproveUser="Имя пользователя" 
+	 BuySaleType="1" 
+	 InvoiceTypeId="1" 
+	 DateTransaction="2016-06-29" 
+	 VatAccount="90090160" 
+	 Account="90090160" 
+	 AccountingDate="2016-06-29" 
+	 OriginalInvoiceNumber="123456789-2016-0000000001" 
+	 SendToRecipient="false" 
+	 DateCancelled="2016-06-29" 
+	 ProviderCounteragentId="1" 
+	 ProviderStatusId="1" 
+	 ProviderDependentPerson="true" 
+	 ProviderResidentsOfOffshore="true" 
+	 ProviderSpecialDealGoods="false" 
+	 ProviderBigCompany="true" 
+	 ProviderCountryCode="112" 
+	 ProviderUnp="123456789" 
+	 ProviderBranchCode="" 
+	 ProviderName="Наименование поставщика" 
+	 ProviderAddress="Адрес" 
+	 PrincipalInvoiceNumber="123456789-2016-0000000001" 
+	 PrincipalInvoiceDate="2016-06-29" 
+	 VendorInvoiceNumber="12344" 
+	 VendorInvoiceDate="2016-06-29" 
+	 ProviderDeclaration="123123" 
+	 DateRelease="2016-06-29" 
+	 DateActualExport="2016-06-29" 
+	 ProviderTaxeNumber="" 
+	 ProviderTaxeDate="2016-06-29" 
+	 RecipientCounteragentId="12" 
+	 RecipientStatusId="1" 
+	 RecipientDependentPerson="true" 
+	 RecipientResidentsOfOffshore="true" 
+	 RecipientSpecialDealGoods="true" 
+	 RecipientBigCompany="true" 
+	 RecipientCountryCode="112" 
+	 RecipientUnp="123456789" 
+	 RecipientBranchCode="11" 
+	 RecipientName="Наименование получателя" 
+	 RecipientAddress="" 
+	 RecipientDeclaration="" 
+	 RecipientTaxeNumber="" 
+	 RecipientTaxeDate="2016-06-29"
+	 DateImport="2016-06-29" 
+	 ContractId="1"
+	 ContractNumber="123.123/321"
+	 ContractDate="2016-06-29"
+	 ContractDescription="">
+	 
+	 <Documents>
+	   <Document 
+		  Id="1"
+		  TypeCode="1" 
+		  BlancCode="1" 
+		  Number="1"
+		  Seria="ф"
+		  Date="2016-06-29"
+	   />
+	</Documents>
+	 
+	 <Consignors>
+	   <Consignor 
+		  CounteragentId="1"
+		  Name="наименование" 
+		  Unp="" 
+		  CountryCode="" 
+		  Address="" 
+	   />
+	</Consignors>
+
+	<Consignees>
+	   <Consignee 
+		  CounteragentId=""
+		  Name="ыва" 
+		  Unp="" 
+		  CountryCode="" 
+		  Address="" 
+	   />
+	</Consignees>
+
+	 <RosterList>
+	   <Roster
+		   Number="0" 
+		   Name="наименование" 
+		   Code="" 
+		   CodeOced="" 
+		   Units="0" 
+		   Count="1" 
+		   Price="1" 
+		   Cost="1" 
+		   SummaExcise="1" 
+		   VatRate="1" 
+		   VatRateTypeId="1" 
+		   SummaVat="1" 
+		   CostVat="1">
+	   
+		 <Description DescriptionTypeId="1" />
+		 <Description DescriptionTypeId="2" />
+		</Roster>
+	</RosterList>
+
+	 
+	 </Invoice>
+
+  <Invoice
+	 ReplicationSourceId="5"
+	 ReplicationId="1"
+	 IsApprove="true"
+	 ApproveUser="Имя пользователя"
+	 BuySaleType="1"
+	 InvoiceTypeId="1"
+	 DateTransaction="2016-06-29"
+	 VatAccount="90090160"
+	 Account="90090160"
+	 AccountingDate="2016-06-29"
+	 OriginalInvoiceNumber="123456789-2016-0000000001"
+	 SendToRecipient="false"
+	 DateCancelled="2016-06-29"
+	 ProviderCounteragentId="1"
+	 ProviderStatusId="1"
+	 ProviderDependentPerson="true"
+	 ProviderResidentsOfOffshore="true"
+	 ProviderSpecialDealGoods="false"
+	 ProviderBigCompany="true"
+	 ProviderCountryCode="112"
+	 ProviderUnp="123456789"
+	 ProviderBranchCode=""
+	 ProviderName="Наименование поставщика"
+	 ProviderAddress="Адрес"
+	 PrincipalInvoiceNumber="123456789-2016-0000000001"
+	 PrincipalInvoiceDate="2016-06-29"
+	 VendorInvoiceNumber="12344"
+	 VendorInvoiceDate="2016-06-29"
+	 ProviderDeclaration="123123"
+	 DateRelease="2016-06-29"
+	 DateActualExport="2016-06-29"
+	 ProviderTaxeNumber=""
+	 ProviderTaxeDate="2016-06-29"
+	 RecipientCounteragentId="12"
+	 RecipientStatusId="1"
+	 RecipientDependentPerson="true"
+	 RecipientResidentsOfOffshore="true"
+	 RecipientSpecialDealGoods="true"
+	 RecipientBigCompany="true"
+	 RecipientCountryCode="112"
+	 RecipientUnp="123456789"
+	 RecipientBranchCode="11"
+	 RecipientName="Наименование получателя"
+	 RecipientAddress=""
+	 RecipientDeclaration=""
+	 RecipientTaxeNumber=""
+	 RecipientTaxeDate="2016-06-29"
+	 DateImport="2016-06-29"
+	 ContractId="1"
+	 ContractNumber="123.123/321"
+	 ContractDate="2016-06-29"
+	 ContractDescription="">
+
+    <Documents>
+      <Document
+       Id="1"
+       TypeCode="1"
+       BlancCode="1"
+       Number="1"
+       Seria="ф"
+       Date="2016-06-29"
+	   />
+    </Documents>
+
+    <Consignors>
+      <Consignor
+       CounteragentId="1"
+       Name="наименование"
+       Unp=""
+       CountryCode=""
+       Address=""
+	   />
+    </Consignors>
+
+    <Consignees>
+      <Consignee
+       CounteragentId=""
+       Name="ыва"
+       Unp=""
+       CountryCode=""
+       Address=""
+	   />
+    </Consignees>
+
+    <RosterList>
+      <Roster
+        Number="0"
+        Name="наименование"
+        Code=""
+        CodeOced=""
+        Units="0"
+        Count="1"
+        Price="1"
+        Cost="1"
+        SummaExcise="1"
+        VatRate="1"
+        VatRateTypeId="1"
+        SummaVat="1"
+        CostVat="1">
+
+        <Description DescriptionTypeId="1" />
+      </Roster>
+    </RosterList>
+
+
+  </Invoice>
+
+</InvoiceList>

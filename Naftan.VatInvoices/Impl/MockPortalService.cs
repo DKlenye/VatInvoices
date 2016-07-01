@@ -18,8 +18,8 @@ namespace Naftan.VatInvoices.Impl
                     x,
                     i%2 == 0,
                     i%2 == 0?"Сообщение об ошибке":"",
-                    "",
-                    ""
+                    xml: "",
+                    signXml: ""
                     );
             });
 

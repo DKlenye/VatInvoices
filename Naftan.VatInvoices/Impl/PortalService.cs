@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using EInvVatService;
 using Naftan.VatInvoices.Domain;
 using Naftan.VatInvoices.Dto;
+using Naftan.VatInvoices.Extensions;
 
 namespace Naftan.VatInvoices.Impl
 {
@@ -99,16 +100,22 @@ namespace Naftan.VatInvoices.Impl
                                     {
                                         if (status.Status == "NOT_FOUND")
                                             i = new SendOutInfo(x, true, "ЭСЧФ не прошёл проверку на портале");
-                                        else
+                                        else 
                                         {
-                                            i = new SendOutInfo(
-                                                x,
-                                                false,
-                                                ticket.Message,
-                                                Encoding.UTF8.GetString(
-                                                    Convert.FromBase64String(eDoc.Document.GetData[1])),
-                                                Encoding.UTF8.GetString(Convert.FromBase64String(eDoc.GetData[1]))
-                                                );
+                                            if (status.Status == "ERROR")
+                                                i = new SendOutInfo(x, true,status.Message);
+                                        else
+                                            {
+                                                i = new SendOutInfo(
+                                                    x,
+                                                    false,
+                                                    ticket.Message,
+                                                    Encoding.UTF8.GetString(
+                                                        Convert.FromBase64String(eDoc.Document.GetData[1])),
+                                                    Encoding.UTF8.GetString(Convert.FromBase64String(eDoc.GetData[1])),
+                                                    status.Status.ConvertToEnum<InvoiceStatus>()
+                                                    );
+                                            }
                                         }
                                     }
                                 }

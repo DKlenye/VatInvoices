@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 using Naftan.VatInvoices.Domain;
@@ -89,8 +90,16 @@ namespace Naftan.VatInvoices.Impl
 
         public VatInvoice Deserialize(string xml)
         {
+
+            byte[] encodedString = Encoding.UTF8.GetBytes(xml);
+
+            // Put the byte array into a stream and rewind it to the beginning
+            var ms = new MemoryStream(encodedString);
+            ms.Flush();
+            ms.Position = 0;
+
             var invoice = new VatInvoice();
-            document.LoadXml(xml);
+            document.Load(ms);
             XmlSerializer serializer;
 
             switch (invoiceType)

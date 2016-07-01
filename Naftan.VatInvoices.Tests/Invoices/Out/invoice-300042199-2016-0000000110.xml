@@ -1,0 +1,88 @@
+<issuance xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" sender="300042199" xmlns="http://www.w3schools.com">
+  <general>
+    <number>300042199-2016-0000000110</number>
+    <dateTransaction>2016-06-30</dateTransaction>
+    <documentType>ORIGINAL</documentType>
+  </general>
+  <provider>
+    <providerStatus>AGENT</providerStatus>
+    <dependentPerson>false</dependentPerson>
+    <residentsOfOffshore>false</residentsOfOffshore>
+    <specialDealGoods>false</specialDealGoods>
+    <bigCompany>true</bigCompany>
+    <countryCode>112</countryCode>
+    <unp>300042199</unp>
+    <name>ОАО "НАФТАН"</name>
+    <address>ОАО "Нафтан", Республика Беларусь, Витебская обл, г.Новополоцк</address>
+  </provider>
+  <recipient>
+    <recipientStatus>CONSUMER</recipientStatus>
+    <dependentPerson>false</dependentPerson>
+    <residentsOfOffshore>false</residentsOfOffshore>
+    <specialDealGoods>false</specialDealGoods>
+    <bigCompany>false</bigCompany>
+    <countryCode>112</countryCode>
+    <unp>300041705</unp>
+    <name>ОАО "СРСУ-3 Г.НОВОПОЛОЦК"</name>
+    <address>ул. Монтажников 3, Новополоцк, Беларусь</address>
+  </recipient>
+  <senderReceiver>
+    <consignors>
+      <consignor>
+        <countryCode>112</countryCode>
+        <unp>300042199</unp>
+        <name>ОАО "НАФТАН"</name>
+        <address>ОАО "Нафтан", Республика Беларусь, Витебская обл, г.Новополоцк</address>
+      </consignor>
+    </consignors>
+    <consignees>
+      <consignee>
+        <countryCode>112</countryCode>
+        <unp>300041705</unp>
+        <name>ОАО "СРСУ-3 Г.НОВОПОЛОЦК"</name>
+        <address>ул. Космонавтов, 100, Гродно, Беларусь</address>
+      </consignee>
+    </consignees>
+  </senderReceiver>
+  <deliveryCondition>
+    <contract>
+      <number>007.09.9630</number>
+      <date>2013-11-01</date>
+      <documents>
+        <document>
+          <docType>
+            <code>608</code>
+          </docType>
+          <date>2016-06-30</date>
+          <number>56927</number>
+        </document>
+      </documents>
+    </contract>
+  </deliveryCondition>
+  <roster totalCostVat="63561.600" totalExcise="0.000" totalVat="10593.600" totalCost="52968.000">
+    <rosterItem>
+      <number>1</number>
+      <name>Возмещаемая теплоэнергия (подогрев холодной воды отопительной водой) (по дог. 007.09.9630 (п.1))</name>
+      <units />
+      <cost>30003.000</cost>
+      <vat>
+        <rate>20.00</rate>
+        <rateType>DECIMAL</rateType>
+        <summaVat>6000.600</summaVat>
+      </vat>
+      <costVat>36003.600</costVat>
+    </rosterItem>
+    <rosterItem>
+      <number>2</number>
+      <name>Возмещаемая теплоэнергия (подогрев холодной воды отопительной водой) (по дог. 007.09.9630 (п.1))</name>
+      <units />
+      <cost>22965.000</cost>
+      <vat>
+        <rate>20.00</rate>
+        <rateType>DECIMAL</rateType>
+        <summaVat>4593.000</summaVat>
+      </vat>
+      <costVat>27558.000</costVat>
+    </rosterItem>
+  </roster>
+</issuance>

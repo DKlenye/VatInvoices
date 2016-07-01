@@ -32,7 +32,7 @@ namespace Naftan.VatInvoices.Converters
             return new rosterItem
             {
                 code = obj.Code,
-                code_oced = String.IsNullOrEmpty(obj.CodeOced)?null:obj.CodeOced,
+                code_oced = String.IsNullOrEmpty(obj.CodeOced) ? null : obj.CodeOced,
                 cost = obj.Cost,
                 costVat = obj.CostVat,
                 count = obj.Count ?? 0,
@@ -44,7 +44,7 @@ namespace Naftan.VatInvoices.Converters
                 priceSpecified = obj.Price != null,
                 summaExcise = obj.SummaExcise ?? 0,
                 summaExciseSpecified = obj.SummaExcise != null,
-                units = obj.Units.ToString(),
+                units = (obj.Units == null || obj.Units.Value==0) ? null : obj.Units.ToString(),
                 vat = new vat
                 {
                     rate = obj.VatRate,

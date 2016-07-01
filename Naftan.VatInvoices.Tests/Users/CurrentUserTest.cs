@@ -7,11 +7,6 @@ namespace Naftan.VatInvoices.Tests.Users
 {
     public class CurrentUserTest
     {
-        [Test]
-        public void LoginTest()
-        {
-            Console.Write(CurrentUser.Login);
-        }
 
         [Test]
         public void RolesTest()
@@ -25,10 +20,5 @@ namespace Naftan.VatInvoices.Tests.Users
             Console.Write(CurrentUser.Name);
         }
 
-        [Test]
-        public void IsAdminTest()
-        {
-            Console.Write(CurrentUser.IsAdmin());
-        }
     }
 }

@@ -57,13 +57,19 @@
     <Compile Include="Commands\AbstractInsertCommand.cs" />
     <Compile Include="Commands\AbstractSqlCommand.cs" />
     <Compile Include="Commands\AbstractUpdateCommand.cs" />
+    <Compile Include="Commands\AddVatInvoice.cs" />
+    <Compile Include="Commands\DDL\CreateProcedure\spu_AddVatInvoice.cs" />
+    <Compile Include="Commands\DDL\CreateProcedure\spu_FindContract.cs" />
+    <Compile Include="Commands\DDL\CreateProcedure\spu_FindCounteragent.cs" />
     <Compile Include="Commands\DDL\CreateProcedure\spu_GenerateVatInvoiceNumber.cs" />
+    <Compile Include="Commands\DDL\CreateProcedure\spu_RemoveVatInvoice.cs" />
     <Compile Include="Commands\DDL\CreateTable\CreateConsignees.cs" />
     <Compile Include="Commands\DDL\CreateTable\CreateConsignors.cs" />
     <Compile Include="Commands\DDL\CreateTable\CreateDocuments.cs" />
     <Compile Include="Commands\DDL\CreateTable\CreateRosterDescription.cs" />
     <Compile Include="Commands\DDL\CreateTable\CreateRosterList.cs" />
     <Compile Include="Commands\DDL\CreateTable\CreateVatInvoice.cs" />
+    <Compile Include="Commands\DDL\CreateTable\CreateVatInvoiceXml.cs" />
     <Compile Include="Commands\DeleteRoster.cs" />
     <Compile Include="Commands\InsertRoster.cs" />
     <Compile Include="Commands\InsertVatInvoice.cs" />
@@ -99,7 +105,11 @@
     <Compile Include="Domain\VatInvoice.cs" />
     <Compile Include="Domain\VatInvoiceNumber.cs" />
     <Compile Include="Domain\VatInvoiceXml.cs" />
+    <Compile Include="Dto\AddVatInvoiceDto.cs" />
+    <Compile Include="Dto\AddVatInvoiceDtoList.cs" />
+    <Compile Include="Dto\AddVatInvoiceRezult.cs" />
     <Compile Include="Dto\VatInvoiceDto.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\StringApplyTemplateExtension.cs" />
     <Compile Include="Extensions\StringConvertToEnumExtension.cs" />
     <Compile Include="Extensions\TypeConverterExtension.cs" />
@@ -192,21 +202,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Mnsati\xsd\GenerateSchema.bat" />
-    <None Include="Mnsati\xsd\MNSATI_additional.xsd">
+    <EmbeddedResource Include="Mnsati\xsd\MNSATI_additional.xsd">
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Mnsati\xsd\MNSATI_add_no_reference.xsd">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mnsati\xsd\MNSATI_add_no_reference.xsd">
       <SubType>Designer</SubType>
-    </None>
+    </EmbeddedResource>
     <None Include="Mnsati\xsd\MNSATI_cancelled.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Mnsati\xsd\MNSATI_fixed.xsd">
+    <EmbeddedResource Include="Mnsati\xsd\MNSATI_fixed.xsd">
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Mnsati\xsd\MNSATI_original.xsd">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mnsati\xsd\MNSATI_original.xsd">
       <SubType>Designer</SubType>
-    </None>
+    </EmbeddedResource>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

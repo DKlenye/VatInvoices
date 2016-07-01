@@ -45,7 +45,13 @@ namespace Naftan.VatInvoices.Tests.Database
 
         public static void CreateProcedures()
         {
-            Db.Execute(new spu_GenerateVatInvoiceNumber());
+            var type = typeof(spu_AddVatInvoice);
+            var queries = type.Assembly.GetTypes().Where(x => x.Namespace == type.Namespace);
+
+            queries.ToList()
+                .ForEach(x => Db.Execute((ICommand)Activator.CreateInstance(x)));
+
+            Db.Commit();
         }
             
     }

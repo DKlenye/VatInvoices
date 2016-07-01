@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 using System.Xml;
 using Naftan.VatInvoices.Impl;
 using NUnit.Framework;

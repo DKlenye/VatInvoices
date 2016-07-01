@@ -30,9 +30,9 @@ namespace Naftan.VatInvoices.Mnsati
         [Description("Комиссионер")] COMMISSIONAIRE = 4,
 
         /// <summary>
-        /// Покупатель, получающий налоговые вычеты
+        /// Плательщик, получающий налоговые вычеты
         /// </summary>
-        [Description("Покупатель, получающий налоговые вычеты")] TAX_DEDUCTION_RECIPIENT = 5,
+        [Description("Плательщик, получающий налоговые вычеты")] TAX_DEDUCTION_RECIPIENT = 5,
 
         /// <summary>
         /// Покупатель объектов у иностранной организации

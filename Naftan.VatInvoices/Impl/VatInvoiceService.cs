@@ -219,7 +219,7 @@ namespace Naftan.VatInvoices.Impl
                 var invoice = x.Invoice;
                 if (!x.IsException)
                 {
-                    invoice.SetStatus(InvoiceStatus.COMPLETED,"");
+                    invoice.SetStatus(x.Status.Value);
                     invoice.DateIssuance = DateTime.Now;
                     var xml = new VatInvoiceXml
                     {
@@ -307,7 +307,7 @@ namespace Naftan.VatInvoices.Impl
             checkInfo.ToList().ForEach(i =>
             {
                 var dto = i.Invoice;
-                if (!String.IsNullOrEmpty(i.Status) && i.Status != "NOT_FOUND")
+                if (!String.IsNullOrEmpty(i.Status) && i.Status != "NOT_FOUND" && i.Status != "DENIED" && i.Status !="ERROR")
                 {
                     var status = i.Status.ConvertToEnum<InvoiceStatus>();
 

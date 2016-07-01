@@ -47,6 +47,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -63,6 +64,7 @@
     <Compile Include="PortalTests\PortalServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EInvVatService\SetUpClass.cs" />
+    <Compile Include="Serialization\AddVatInvoiceSerializationTests.cs" />
     <Compile Include="Serialization\SerializerTests.cs" />
     <Compile Include="Users\CurrentUserTest.cs" />
     <Compile Include="VatInvoiceServiceTests\ReleaseServiceTest.cs" />
@@ -77,6 +79,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Invoices\Add\InvoiceList.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Invoices\In\invoice-100023423-2016-0000000001.xml" />
     <Content Include="Invoices\In\invoice-100023423-2016-0000000002.xml" />
     <Content Include="Invoices\In\invoice-500036524-2016-0000021962.xml" />

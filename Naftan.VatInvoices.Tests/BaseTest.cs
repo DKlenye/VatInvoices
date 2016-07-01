@@ -278,7 +278,7 @@ namespace Naftan.VatInvoices.Tests
         {
             get
             {
-                return Directory.GetFiles(getPath("\\Invoices\\Out")).First();
+                return Directory.GetFiles(getPath("\\Invoices\\In")).First();
             }
         }
 

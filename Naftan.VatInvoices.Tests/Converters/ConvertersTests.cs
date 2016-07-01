@@ -149,6 +149,18 @@ namespace Naftan.VatInvoices.Tests.Converters
 
             AssertAreEqualAllPropertiesAndFields(r,_);
 
+
+
+            var roster2 = new rosterItem()
+            {
+
+            };
+
+
+
+
+
+
         }
         
     }

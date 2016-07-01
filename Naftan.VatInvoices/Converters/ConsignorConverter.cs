@@ -1,4 +1,5 @@
-﻿using Naftan.VatInvoices.Domain;
+﻿using System;
+using Naftan.VatInvoices.Domain;
 using Naftan.VatInvoices.Mnsati;
 
 namespace Naftan.VatInvoices.Converters
@@ -23,7 +24,7 @@ namespace Naftan.VatInvoices.Converters
                 address = obj.Address,
                 countryCode = obj.CountryCode == null ? null : obj.CountryCode.ToString(),
                 name = obj.Name,
-                unp = obj.Unp
+                unp = String.IsNullOrEmpty(obj.Unp)?"":obj.Unp
             };
         }
     }

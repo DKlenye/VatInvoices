@@ -1,85 +1,75 @@
-
-<issuance xmlns="http://www.w3schools.com" sender="100023423">
-    <general>
-        <number>100023423-2016-0000000001</number>
-        <dateIssuance>2016-05-05</dateIssuance>
-        <dateTransaction>2016-04-12</dateTransaction>
-        <documentType>ORIGINAL</documentType>
-    </general>
-    <provider>
-        <providerStatus>SELLER</providerStatus>
-        <dependentPerson>false</dependentPerson>
-        <residentsOfOffshore>false</residentsOfOffshore>
-        <specialDealGoods>false</specialDealGoods>
-        <bigCompany>false</bigCompany>
-        <countryCode>112</countryCode>
-        <unp>100023423</unp>
-        <name>УП "БЕЛОРГСИНТЕЗ"</name>
-        <address>г. Минск,ул. Пионерская, д.47, пом. 1</address>
-    </provider>
-    <recipient>
-        <recipientStatus>CUSTOMER</recipientStatus>
-        <dependentPerson>false</dependentPerson>
-        <residentsOfOffshore>false</residentsOfOffshore>
-        <specialDealGoods>false</specialDealGoods>
-        <bigCompany>false</bigCompany>
-        <countryCode>112</countryCode>
-        <unp>300042199</unp>
-        <branchCode></branchCode>
-        <name>ОАО "Нафтан"</name>
-        <address>211440 Витебская обл.,г. Новополоцк</address>
-    </recipient>
-    <senderReceiver>
-        <consignors>
-            <consignor>
-                <countryCode>112</countryCode>
-                <unp>100023423</unp>
-                <name>УП "БЕЛОРГСИНТЕЗ"</name>
-                <address>г. Минск,ул. Пионерская, д.47, пом. 1</address>
-            </consignor>
-        </consignors>
-        <consignees>
-            <consignee>
-                <countryCode>112</countryCode>
-                <unp>300042199</unp>
-                <name>ОАО "Нафтан"</name>
-                <address>211440 Витебская обл.,г. Новополоцк</address>
-            </consignee>
-        </consignees>
-    </senderReceiver>
-    <deliveryCondition>
-        <contract>
-            <number>26-051.22.1786</number>
-            <date>2016-02-24</date>
-            <documents>
-                <document>
-                    <docType>
-                        <code>603</code>
-                    </docType>
-                    <date>2016-04-12</date>
-                    <blankCode>402861</blankCode>
-                    <seria>БР</seria>
-                    <number>2029335</number>
-                </document>
-            </documents>
-        </contract>
-    </deliveryCondition>
-    <roster totalCostVat="19527845" totalExcise="0" totalVat="3254641" totalCost="16273204">
-        <rosterItem>
-            <number>0</number>
-            <name>Ceragel CPS71D-7TP2G, pH-электрод</name>
-            <code></code>
-            <units>796</units>
-            <count>2</count>
-            <price>8136602</price>
-            <cost>16273204</cost>
-            <summaExcise>0</summaExcise>
-            <vat>
-                <rate>20</rate>
-                <rateType>DECIMAL</rateType>
-                <summaVat>3254641</summaVat>
-            </vat>
-            <costVat>19527845</costVat>
-        </rosterItem>
-    </roster>
+﻿<issuance xmlns="http://www.w3schools.com"  sender="101325312">
+  <general>
+    <number>101325312-2016-0000001318</number>
+    <dateTransaction>2016-06-17</dateTransaction>
+    <documentType>ORIGINAL</documentType>
+  </general>
+  <provider>
+    <providerStatus>SELLER</providerStatus>
+    <dependentPerson>false</dependentPerson>
+    <residentsOfOffshore>false</residentsOfOffshore>
+    <specialDealGoods>false</specialDealGoods>
+    <bigCompany>false</bigCompany>
+    <countryCode>112</countryCode>
+    <unp>101325312</unp>
+    <branchCode></branchCode>
+    <name>ООО &quot;Хьюмен систем&quot;</name>
+    <address>г.Минск ул.Щорса д.9 оф.401</address>
+    <declaration></declaration>
+  </provider>
+  <recipient>
+    <recipientStatus>CUSTOMER</recipientStatus>
+    <dependentPerson>false</dependentPerson>
+    <residentsOfOffshore>false</residentsOfOffshore>
+    <specialDealGoods>false</specialDealGoods>
+    <bigCompany>false</bigCompany>
+    <countryCode>112</countryCode>
+    <unp>300042199</unp>
+    <branchCode></branchCode>
+    <name>ОАО &quot;Нафтан&quot;</name>
+    <address>211440, РБ, Витебская обл., г. Новополоцк</address>
+    <declaration></declaration>
+  </recipient>
+  <senderReceiver>
+    <consignors>
+    </consignors>
+    <consignees>
+    </consignees>
+  </senderReceiver>
+  <deliveryCondition>
+    <contract>
+      <number>б\н</number>
+      <date>2016-06-17</date>
+      <documents>
+        <document>
+          <docType>
+            <code>608</code>
+          </docType>
+          <date>2016-06-17</date>
+          <blankCode></blankCode>
+          <seria></seria>
+          <number>У-000394</number>
+        </document>
+      </documents>
+    </contract>
+    <description></description>
+  </deliveryCondition>
+  <roster totalCostVat="12400000" totalExcise="0" totalVat="2066666.67" totalCost="10333333.33">
+    <rosterItem>
+      <number>0</number>
+      <name>Доставка</name>
+      <code></code>
+      <units>796</units>
+      <count>100</count>
+      <price>100000</price>
+      <cost>10333333.33</cost>
+      <summaExcise>0</summaExcise>
+      <vat>
+        <rate>20</rate>
+        <rateType>DECIMAL</rateType>
+        <summaVat>2066666.67</summaVat>
+      </vat>
+      <costVat>12400000</costVat>
+    </rosterItem>
+  </roster>
 </issuance>

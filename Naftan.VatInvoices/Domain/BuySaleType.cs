@@ -14,6 +14,10 @@ namespace Naftan.VatInvoices.Domain
         /// <summary>
         /// продажа
         /// </summary>
-        [Description("продажа")] Sale = 2
+        [Description("продажа")] Sale = 2,
+        /// <summary>
+        /// продажа
+        /// </summary>
+        [Description("возмещение")] Compensation = 3
     }
 }
